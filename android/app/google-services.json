@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "469326945631",
+    "project_id": "quibix-bf415",
+    "storage_bucket": "quibix-bf415.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469326945631:android:c8a151d89b6409cdf7aaea",
+        "android_client_info": {
+          "package_name": "in.apps.Quibix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469326945631-mktis72t2scsk9kbrmruuiokv8ujscdc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ5sJiagq1TeLVBfbFpw6dvCRDveWUsVI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469326945631-04808rhhiurkhta41j9dngadrsev9e70.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
