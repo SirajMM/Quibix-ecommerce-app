@@ -17,7 +17,7 @@ class LogInElevatodButton extends StatelessWidget {
         },
         style: ElevatedButton.styleFrom(
           foregroundColor: AppConstantsColor.materialThemeColor,
-          minimumSize: const Size.fromHeight(50), // NEW
+          minimumSize: const Size.fromHeight(50), 
         ),
         child: Text(
           text,

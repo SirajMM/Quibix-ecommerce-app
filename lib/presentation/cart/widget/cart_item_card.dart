@@ -99,7 +99,10 @@ class _CartItemCardState extends State<CartItemCard> {
                       SizedBox(
                         width: 50.sp,
                       ),
-                      const PriceWidget(fontSize: 24)
+                      const PriceWidget(
+                        fontSize: 24,
+                        price: '\$200',
+                      )
                     ],
                   )
                 ],

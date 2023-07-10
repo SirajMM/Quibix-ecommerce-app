@@ -1,31 +1,47 @@
-import 'package:e_commerce_store/application/wishlist/wishlist_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'item_card.dart';
 
 class ItemsGrid extends StatelessWidget {
   const ItemsGrid({
     super.key,
-    required this.itemCount,
+    required this.products,
   });
-
-  final int itemCount;
+  final Stream<QuerySnapshot<Map<String, dynamic>>> products;
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      itemCount: itemCount,
-      physics: const BouncingScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          mainAxisSpacing: 5,
-          crossAxisSpacing: 5,
-          crossAxisCount: 2,
-          childAspectRatio: 1.0),
-      itemBuilder: (context, index) => ItemCard(
-          index: index,
-          image: Provider.of<WishListProvider>(context).items[index]['image']!,
-          name: Provider.of<WishListProvider>(context).items[index]['name']!),
-    );
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: products,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
+            );
+          }
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+          if (snapshot.hasData) {
+            return GridView.builder(
+                shrinkWrap: true,
+                itemCount: snapshot.data!.docs.length,
+                physics: const BouncingScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: 5,
+                  crossAxisSpacing: 5,
+                  crossAxisCount: 2,
+                  childAspectRatio: (.3 / .4),
+                ),
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot details = snapshot.data!.docs[index];
+                  return ItemCard(
+                    allDetails: details,
+                  );
+                });
+          }
+          return const Center(child: Text('No products found'));
+        });
   }
 }

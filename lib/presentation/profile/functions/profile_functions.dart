@@ -1,5 +1,5 @@
 import 'package:e_commerce_store/model/functions/auth.dart';
-import 'package:e_commerce_store/presentation/login/login_screen.dart';
+import 'package:e_commerce_store/widgets/login_or_home/login_or_home.dart';
 import 'package:flutter/material.dart';
 
 class ProfileFunctions {
@@ -31,14 +31,12 @@ class ProfileFunctions {
                 style: TextStyle(color: Colors.red),
               ),
               onPressed: () {
-                Auth().signOut1();
-
-                Navigator.pushAndRemoveUntil(
+                Auth().signOut1().then((value) => Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ScreenLogin(),
+                      builder: (context) => const LoginOrSignIn(),
                     ),
-                    (route) => false);
+                    (route) => false));
               },
             ),
           ],

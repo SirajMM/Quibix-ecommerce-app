@@ -1,7 +1,9 @@
 import 'package:e_commerce_store/core/colors/app_color.dart';
 import 'package:e_commerce_store/core/constants.dart';
+import 'package:e_commerce_store/presentation/address/address.dart';
 import 'package:e_commerce_store/presentation/cart/cart.dart';
 import 'package:e_commerce_store/presentation/orders/my_orders.dart';
+import 'package:e_commerce_store/presentation/profile/widgets/container_clipper.dart';
 import 'package:e_commerce_store/presentation/profile/widgets/profile_circleavathar.dart';
 import 'package:e_commerce_store/presentation/profile/widgets/profile_sttings_tile.dart';
 import 'package:e_commerce_store/presentation/whishlist/whishlist.dart';
@@ -15,27 +17,49 @@ class ScreenProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 30.0, right: 30),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                const ProfieCircleAvathar(),
-                constSizedBox10,
-                const Text(
-                  'Username',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-                const Text(
-                  'user123@gmail.com',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-                constSizedBox20,
-                Container(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              Stack(
+                alignment: AlignmentDirectional.topCenter,
+                children: [
+                  ClipPath(
+                    clipper: ContainerClipper(),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                            AppConstantsColor.materialThemeColor,
+                            AppConstantsColor.materialThemeColor2,
+                          ])),
+                      height: 290,
+                      width: double.infinity,
+                    ),
+                  ),
+                  const ProfieCircleAvathar(),
+                ],
+              ),
+              const Text(
+                'user123@gmail.com',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              ),
+              const Text(
+                'Username',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              ),
+              constSizedBox20,
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 110,
+                  right: 110,
+                ).r,
+                child: Container(
                   height: 1200.h,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
@@ -58,9 +82,14 @@ class ScreenProfile extends StatelessWidget {
                           },
                         ),
                         constSizedBox10,
-                        const ProfileSettingsTile(
+                        ProfileSettingsTile(
                           icons: CupertinoIcons.location,
                           text: 'Address',
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ScreenAddAddress(),
+                              )),
                         ),
                         constSizedBox10,
                         ProfileSettingsTile(
@@ -108,9 +137,9 @@ class ScreenProfile extends StatelessWidget {
                       ],
                     ),
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),

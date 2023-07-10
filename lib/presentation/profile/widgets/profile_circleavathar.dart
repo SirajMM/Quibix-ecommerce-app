@@ -17,7 +17,7 @@ class ProfieCircleAvathar extends StatelessWidget {
         alignment: AlignmentDirectional.topCenter,
         children: <Widget>[
           Positioned(
-            top: 250.h,
+            top: 210.h,
             child: PhysicalModel(
               color: Colors.black,
               shape: BoxShape.circle,
@@ -31,7 +31,7 @@ class ProfieCircleAvathar extends StatelessWidget {
           ),
           Positioned(
             top: 570.h,
-            left: 560.w,
+            left: 590.w,
             child: IconButton(
               onPressed: () {},
               icon: const CircleAvatar(

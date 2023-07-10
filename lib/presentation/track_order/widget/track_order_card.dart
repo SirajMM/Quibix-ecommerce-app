@@ -54,7 +54,10 @@ class TrackOrderCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const PriceWidget(fontSize: 25),
+                      const PriceWidget(
+                        fontSize: 25,
+                        price: '\$200',
+                      ),
                       SizedBox(
                         width: 60.w,
                       ),

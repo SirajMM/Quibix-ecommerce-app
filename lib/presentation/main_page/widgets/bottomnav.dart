@@ -23,9 +23,10 @@ class BottomNav extends StatelessWidget {
         items: [
           CustomNavigationBarItem(icon: const Icon(CupertinoIcons.home)),
           CustomNavigationBarItem(
-              icon: Icon((newIndex == 1)
-                  ? CupertinoIcons.heart_solid
-                  : CupertinoIcons.heart)),
+              selectedIcon: const Icon(
+                CupertinoIcons.heart_solid,
+              ),
+              icon: const Icon(CupertinoIcons.heart)),
           CustomNavigationBarItem(
               icon: const Icon(CupertinoIcons.shopping_cart)),
           CustomNavigationBarItem(

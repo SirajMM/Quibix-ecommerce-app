@@ -1,4 +1,3 @@
-import 'package:e_commerce_store/core/colors/app_color.dart';
 import 'package:e_commerce_store/core/constants.dart';
 import 'package:e_commerce_store/presentation/orders/widget/oders_custom_card.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,7 @@ class ScreenOrders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppConstantsColor.scaffoldBgColor,
+      // backgroundColor: AppConstantsColor.scaffoldBgColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(

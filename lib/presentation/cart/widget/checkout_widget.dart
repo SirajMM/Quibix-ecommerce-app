@@ -16,7 +16,10 @@ class CheckoutWidget extends StatelessWidget {
           'Total : ',
           style: TextStyle(fontSize: 25),
         ),
-        const PriceWidget(fontSize: 25),
+        const PriceWidget(
+          fontSize: 25,
+          price: '\$200',
+        ),
         const Spacer(),
         ElevatedButton(
             style: ElevatedButton.styleFrom(

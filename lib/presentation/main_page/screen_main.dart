@@ -1,8 +1,6 @@
 import 'package:animations/animations.dart';
-import 'package:e_commerce_store/core/colors/app_color.dart';
 import 'package:e_commerce_store/presentation/main_page/widgets/bottomnav.dart';
 import 'package:flutter/material.dart';
-
 import '../cart/cart.dart';
 import '../home/home_screen.dart';
 import '../orders/my_orders.dart';
@@ -19,7 +17,7 @@ class ScreenMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppConstantsColor.scaffoldBgColor,
+      backgroundColor: Colors.transparent,
       body: ValueListenableBuilder(
         valueListenable: indexChangeNotifier,
         builder: (context, index, child) => PageTransitionSwitcher(

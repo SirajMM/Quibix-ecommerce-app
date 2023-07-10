@@ -1,14 +1,19 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously
+import 'package:e_commerce_store/application/login/login_provider.dart';
 import 'package:e_commerce_store/core/colors/app_color.dart';
 import 'package:e_commerce_store/core/constants.dart';
 import 'package:e_commerce_store/model/functions/auth.dart';
 import 'package:e_commerce_store/presentation/SignUp/sign_up_screen.dart';
 import 'package:e_commerce_store/presentation/login/widgets/log_in_elevated_button.dart';
 import 'package:e_commerce_store/presentation/login/widgets/text_field.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:e_commerce_store/widgets/login_or_home/login_or_home.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
+import '../../widgets/navigate_signin_and_signup.dart';
+import 'reset_password/reset_screen.dart';
+
 class ScreenLogin extends StatefulWidget {
   const ScreenLogin({super.key});
 
@@ -17,33 +22,13 @@ class ScreenLogin extends StatefulWidget {
 }
 
 class _ScreenLoginState extends State<ScreenLogin> {
-  String errorMessage = '';
-
-  final TextEditingController _emailController = TextEditingController();
-
-  final TextEditingController _paswordController = TextEditingController();
-
-  final GlobalKey<FormState> _key = GlobalKey<FormState>();
-
-  Future<void> signInWithEmailAndPassword() async {
-    try {
-      await Auth().signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _paswordController.text,
-      );
-    } on FirebaseAuthException catch (e) {
-      errorMessage = e.message!;
-    }
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     // User? user = FirebaseAuth.instance.currentUser;
     final respSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Form(
-        key: _key,
+        key: _key1,
         child: Container(
           height: respSize.height,
           width: respSize.width,
@@ -85,7 +70,9 @@ class _ScreenLoginState extends State<ScreenLogin> {
                   ),
                   constSizedBox10,
                   CustomTextField(
-                      comtroller: _emailController, validator: validateEmail),
+                      obscureText: false,
+                      comtroller: _emailController,
+                      validator: validateEmail),
                   SizedBox(
                     height: respSize.height * 0.02,
                   ),
@@ -98,18 +85,36 @@ class _ScreenLoginState extends State<ScreenLogin> {
                   ),
                   constSizedBox10,
                   CustomTextField(
+                      obscureText:
+                          Provider.of<LoginProvider>(context).obscureText,
+                      eyeIcon: Consumer<LoginProvider>(
+                        builder: (context, value, child) => GestureDetector(
+                            onTap: () {
+                              value.changeObscureText();
+                            },
+                            child: Icon((value.obscureText)
+                                ? CupertinoIcons.eye
+                                : CupertinoIcons.eye_slash)),
+                      ),
                       comtroller: _paswordController,
                       validator: validatePassword),
                   constSizedBox10,
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        'Forget Password?',
-                        style: TextStyle(
-                            color: AppConstantsColor.lightTextColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w200),
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ResetScreen(),
+                            )),
+                        child: const Text(
+                          'Forget Password?',
+                          style: TextStyle(
+                              color: AppConstantsColor.lightTextColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w200),
+                        ),
                       )
                     ],
                   ),
@@ -121,10 +126,15 @@ class _ScreenLoginState extends State<ScreenLogin> {
                     height: respSize.height * 0.06,
                   ),
                   LogInElevatodButton(
-                    onTap: () {
-                      if (_key.currentState!.validate()) {
-                        signInWithEmailAndPassword();
+                    onTap: () async {
+                      if (_key1.currentState!.validate()) {
+                        await Auth().signInWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _paswordController.text,
+                            context: context);
                       }
+                      _emailController.clear();
+                      passwordController.clear();
                     },
                     text: 'Log In',
                   ),
@@ -140,28 +150,28 @@ class _ScreenLoginState extends State<ScreenLogin> {
                         ),
                       ]),
                   LogInElevatodButton(
-                    onTap: () {},
+                    onTap: () async {
+                      await Auth()
+                          .signInWithGoogle()
+                          .then((value) => Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginOrSignIn(),
+                              ),
+                              (route) => false));
+                    },
                     text: 'Continue with Google',
                   ),
                   constSizedBox10,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ScreenSignUp(),
-                            )),
-                        child: const Text(
-                          'Don\'t have an Account? Create Account',
-                          style: TextStyle(
-                              color: AppConstantsColor.lightTextColor,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w300),
-                        ),
-                      )
-                    ],
+                  SwitchSingInAndSignUp(
+                    mainText: 'Don\'t have an Account?',
+                    subText: ' Create',
+                    ontap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ScreenSignUp(),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -192,3 +202,9 @@ String? validatePassword(String? formPassword) {
 
   return null;
 }
+
+String errorMessage = '';
+final TextEditingController _emailController = TextEditingController();
+
+final TextEditingController _paswordController = TextEditingController();
+final GlobalKey<FormState> _key1 = GlobalKey<FormState>();

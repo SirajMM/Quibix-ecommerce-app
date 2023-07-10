@@ -1,9 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
-import 'package:e_commerce_store/application/wishlist/wishlist_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_store/core/colors/app_color.dart';
 import 'package:e_commerce_store/presentation/home/widgets/home_app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../widgets/items_gride.dart';
 
 class ScreenHome extends StatefulWidget {
@@ -80,12 +79,11 @@ class _ScreenHome extends State<ScreenHome> with TickerProviderStateMixin {
     super.dispose();
   }
 
-// List<String> items = ['Headphones', 'Tv', 'Watch', 'LapTop','phone'];
+
   @override
   Widget build(BuildContext context) {
     var respsize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: AppConstantsColor.scaffoldBgColor,
       appBar: const HomeCustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
@@ -130,25 +128,32 @@ class _ScreenHome extends State<ScreenHome> with TickerProviderStateMixin {
                             animation: _colorTweenBackgroundOn,
                             builder: (context, child) => Padding(
                               padding: const EdgeInsets.only(left: 5, right: 5),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  fixedSize: const Size(100, 30),
-                                  elevation: 2,
-                                  backgroundColor: _getBackgroundColor(index),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _controller.animateTo(index);
-                                    _setCurrentIndex(index);
-                                    _scrollTo(index);
-                                  });
-                                },
-                                child: Text(
-                                  _categories[index],
-                                  style: TextStyle(
-                                    color: _getForegroundColor(index),
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w600,
+                              child: Material(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(18),
+                                elevation: 3,
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    minimumSize: MaterialStateProperty.all(
+                                        const Size(100, 50)),
+                                    elevation: MaterialStateProperty.all(2),
+                                    backgroundColor: MaterialStateProperty.all(
+                                        _getBackgroundColor(index)),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _controller.animateTo(index);
+                                      _setCurrentIndex(index);
+                                      _scrollTo(index);
+                                    });
+                                  },
+                                  child: Text(
+                                    _categories[index],
+                                    style: TextStyle(
+                                      color: _getForegroundColor(index),
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -166,17 +171,25 @@ class _ScreenHome extends State<ScreenHome> with TickerProviderStateMixin {
             controller: _controller,
             children: <Widget>[
               ItemsGrid(
-                itemCount: Provider.of<WishListProvider>(context).items.length,
+                  products: FirebaseFirestore.instance
+                      .collection('products')
+                      .snapshots()),
+              ItemsGrid(
+                products: FirebaseFirestore.instance
+                    .collection('products')
+                    .where('category', isEqualTo: 'Tv')
+                    .snapshots(),
               ),
               ItemsGrid(
-                itemCount: Provider.of<WishListProvider>(context).items.length,
-              ),
+                  products: FirebaseFirestore.instance
+                      .collection('products')
+                      .where('category', isEqualTo: 'Watch')
+                      .snapshots()),
               ItemsGrid(
-                itemCount: Provider.of<WishListProvider>(context).items.length,
-              ),
-              ItemsGrid(
-                itemCount: Provider.of<WishListProvider>(context).items.length,
-              ),
+                  products: FirebaseFirestore.instance
+                      .collection('products')
+                      .where('category', isEqualTo: 'LapTop')
+                      .snapshots()),
             ],
           ),
         ),
@@ -186,20 +199,16 @@ class _ScreenHome extends State<ScreenHome> with TickerProviderStateMixin {
 
   _handleTabAnimation() {
     _aniValue = _controller.animation!.value;
-
     if (!_buttonTap && ((_aniValue - _prevAniValue).abs() < 1)) {
       _setCurrentIndex(_aniValue.round());
     }
-
     _prevAniValue = _aniValue;
   }
 
   _handleTabChange() {
     if (_buttonTap) _setCurrentIndex(_controller.index);
-
     if ((_controller.index == _prevControllerIndex) ||
         (_controller.index == _aniValue.round())) _buttonTap = false;
-
     _prevControllerIndex = _controller.index;
   }
 
@@ -208,9 +217,7 @@ class _ScreenHome extends State<ScreenHome> with TickerProviderStateMixin {
       setState(() {
         _currentIndex = index;
       });
-
       _triggerAnimation();
-
       _scrollTo(index);
     }
   }
@@ -218,7 +225,6 @@ class _ScreenHome extends State<ScreenHome> with TickerProviderStateMixin {
   _triggerAnimation() {
     _animationControllerOn.reset();
     _animationControllerOff.reset();
-
     _animationControllerOn.forward();
     _animationControllerOff.forward();
   }
@@ -228,7 +234,6 @@ class _ScreenHome extends State<ScreenHome> with TickerProviderStateMixin {
 
     RenderBox? renderBox =
         _keys[index].currentContext?.findRenderObject() as RenderBox?;
-
     if (renderBox != null) {
       double size = renderBox.size.width;
       double position = renderBox.localToGlobal(Offset.zero).dx;
@@ -248,16 +253,13 @@ class _ScreenHome extends State<ScreenHome> with TickerProviderStateMixin {
         position = renderBox?.localToGlobal(Offset.zero).dx ?? 0.0;
 
         size = renderBox?.size.width ?? 0.0;
-
         if (position + size < screenWidth) {
           screenWidth = position + size;
         }
-
         if (position + size - offset < screenWidth) {
           offset = position + size - screenWidth;
         }
       }
-
       _scrollController.animateTo(
         offset + _scrollController.offset,
         duration: const Duration(milliseconds: 150),

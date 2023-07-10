@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="in.apps.Quibix">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="Quibix"
         android:name="${applicationName}"

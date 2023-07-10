@@ -1,9 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:developer';
 import 'package:e_commerce_store/model/functions/auth.dart';
-import 'package:e_commerce_store/widgets/login_or_home/login_or_home.dart';
+import 'package:e_commerce_store/presentation/login/reset_password/reset_screen.dart';
+import 'package:e_commerce_store/widgets/navigate_signin_and_signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../application/sign_up/sign-up.dart';
 import '../../core/colors/app_color.dart';
 import '../../core/constants.dart';
 import '../login/login_screen.dart';
@@ -17,6 +21,10 @@ class ScreenSignUp extends StatefulWidget {
   State<ScreenSignUp> createState() => _ScreenSignUpState();
 }
 
+final TextEditingController emailController = TextEditingController();
+final TextEditingController paswordController = TextEditingController();
+final TextEditingController confirmPaswordController = TextEditingController();
+TextEditingController nameController = TextEditingController();
 String errorMessage = '';
 
 final GlobalKey<FormState> _key = GlobalKey<FormState>();
@@ -68,7 +76,8 @@ class _ScreenSignUpState extends State<ScreenSignUp> {
                         fontWeight: FontWeight.w200),
                   ),
                   constSizedBox10,
-                  CustomTextField(comtroller: nameController),
+                  CustomTextField(
+                      obscureText: false, comtroller: nameController),
                   SizedBox(
                     height: respSize.height * 0.02,
                   ),
@@ -81,7 +90,9 @@ class _ScreenSignUpState extends State<ScreenSignUp> {
                   ),
                   constSizedBox10,
                   CustomTextField(
-                      comtroller: emailController, validator: validateEmail),
+                      obscureText: false,
+                      comtroller: emailController,
+                      validator: validateEmail),
                   constSizedBox10,
                   const Text(
                     'Password',
@@ -92,6 +103,18 @@ class _ScreenSignUpState extends State<ScreenSignUp> {
                   ),
                   constSizedBox10,
                   CustomTextField(
+                      obscureText:
+                          Provider.of<SignUpProvider>(context).obscureText,
+                      eyeIcon: Consumer<SignUpProvider>(
+                        builder: (context, value, child) => GestureDetector(
+                            onDoubleTap: () => value.changeObscureText(),
+                            child: Icon(
+                              (value.obscureText)
+                                  ? CupertinoIcons.eye
+                                  : CupertinoIcons.eye_slash,
+                              size: 30,
+                            )),
+                      ),
                       comtroller: paswordController,
                       validator: validatePassword),
                   constSizedBox10,
@@ -104,6 +127,21 @@ class _ScreenSignUpState extends State<ScreenSignUp> {
                   ),
                   constSizedBox10,
                   CustomTextField(
+                      obscureText:
+                          Provider.of<SignUpProvider>(context).conFirmText,
+                      eyeIcon: Consumer<SignUpProvider>(
+                        builder: (context, value, child) => GestureDetector(
+                          onTap: () {
+                            value.confirmChangeObscureText();
+                          },
+                          child: Icon(
+                            (value.conFirmText)
+                                ? CupertinoIcons.eye
+                                : CupertinoIcons.eye_slash,
+                            size: 30,
+                          ),
+                        ),
+                      ),
                       comtroller: confirmPaswordController,
                       validator: validateConfirmPassword),
                   constSizedBox10,
@@ -112,22 +150,27 @@ class _ScreenSignUpState extends State<ScreenSignUp> {
                     style: const TextStyle(color: Colors.red),
                   ),
                   SizedBox(
-                    height: respSize.height * 0.06,
+                    height: respSize.height * 0.04,
                   ),
                   LogInElevatodButton(
                     onTap: () {
                       if (_key.currentState!.validate()) {
                         createUserWithEmailAndpassword();
-                        // await Auth().createUserWithEmailAndPassword(
-                        //     email: emailController.text,
-                        //     password: paswordController.text);
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => const LoginOrSignIn(),
-                        ));
                       }
+                      
+                      emailController.clear();
+                      passwordController.clear();
+                      confirmPaswordController.clear();
+                      nameController.clear();
                     },
                     text: 'Sign Up',
                   ),
+                  constSizedBox10,
+                  SwitchSingInAndSignUp(
+                    mainText: 'Already a user?',
+                    subText: ' SignIn',
+                    ontap: () => Navigator.pop(context),
+                  )
                 ],
               ),
             ),
@@ -141,7 +184,9 @@ class _ScreenSignUpState extends State<ScreenSignUp> {
   createUserWithEmailAndpassword() async {
     try {
       await Auth().createUserWithEmailAndPassword(
-          email: emailController.text, password: paswordController.text);
+          email: emailController.text,
+          password: paswordController.text,
+          context: context);
     } on FirebaseAuthException catch (e) {
       if (mounted) {
         setState(() {
@@ -153,11 +198,6 @@ class _ScreenSignUpState extends State<ScreenSignUp> {
     }
   }
 }
-
-final TextEditingController emailController = TextEditingController();
-final TextEditingController paswordController = TextEditingController();
-final TextEditingController confirmPaswordController = TextEditingController();
-TextEditingController nameController = TextEditingController();
 
 String? validateConfirmPassword(confirmPaswordController) {
   if (paswordController.text != confirmPaswordController) {
