@@ -3,14 +3,15 @@ import 'package:e_commerce_store/core/constants.dart';
 import 'package:e_commerce_store/presentation/address/address.dart';
 import 'package:e_commerce_store/presentation/cart/cart.dart';
 import 'package:e_commerce_store/presentation/orders/my_orders.dart';
-import 'package:e_commerce_store/presentation/profile/widgets/container_clipper.dart';
 import 'package:e_commerce_store/presentation/profile/widgets/profile_circleavathar.dart';
 import 'package:e_commerce_store/presentation/profile/widgets/profile_sttings_tile.dart';
 import 'package:e_commerce_store/presentation/whishlist/whishlist.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'functions/profile_functions.dart';
+import 'widgets/background_design.dart';
 
 class ScreenProfile extends StatelessWidget {
   const ScreenProfile({super.key});
@@ -24,34 +25,22 @@ class ScreenProfile extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              Stack(
+              const Stack(
                 alignment: AlignmentDirectional.topCenter,
                 children: [
-                  ClipPath(
-                    clipper: ContainerClipper(),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [
-                            AppConstantsColor.materialThemeColor,
-                            AppConstantsColor.materialThemeColor2,
-                          ])),
-                      height: 290,
-                      width: double.infinity,
-                    ),
-                  ),
-                  const ProfieCircleAvathar(),
+                  BagroundDesign(),
+                  ProfieCircleAvathar(),
                 ],
               ),
-              const Text(
-                'user123@gmail.com',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              Text(
+                userEmail,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
-              const Text(
-                'Username',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              Text(
+                userName,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               constSizedBox20,
               Padding(
@@ -130,8 +119,7 @@ class ScreenProfile extends StatelessWidget {
                           icons: Icons.logout_outlined,
                           text: 'Log Out',
                           onTap: () {
-                            ProfileFunctions dialoge = ProfileFunctions();
-                            dialoge.dialogBuilder(context);
+                            ProfileFunctions().dialogBuilder(context);
                           },
                         ),
                       ],
@@ -146,3 +134,6 @@ class ScreenProfile extends StatelessWidget {
     );
   }
 }
+
+final String userEmail = FirebaseAuth.instance.currentUser!.email!;
+final String userName = FirebaseAuth.instance.currentUser!.displayName!;

@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_typing_uninitialized_variables
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_store/core/constants.dart';
+import 'package:e_commerce_store/model/wishlist_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ class ItemCard extends StatelessWidget {
   final allDetails;
   @override
   Widget build(BuildContext context) {
+    final wishlistProvider = Provider.of<WishListProvider>(context);
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -41,23 +43,34 @@ class ItemCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     PriceWidget(fontSize: 22, price: allDetails['price']),
-                    Consumer<WishListProvider>(
-                      builder: (context, value, child) => GestureDetector(
-                          onTap: () {
-                            String itemName = allDetails['productname']!;
-                            value.addToFav(itemName);
-                          },
-                          child: value.isExist(allDetails['productname']!)
-                              ? const Icon(
-                                  CupertinoIcons.heart_solid,
-                                  color: Colors.red,
-                                  size: 28,
-                                )
-                              : const Icon(
-                                  CupertinoIcons.heart,
-                                  size: 28,
-                                )),
-                    )
+                    FutureBuilder(
+                        future:
+                            wishlistProvider.existInWishlist(allDetails['id']),
+                        builder: (context, snapshot) {
+                          final bool itemExists = snapshot.data ?? false;
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const SizedBox(
+                              height: 15,
+                              width: 15,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            );
+                          }
+                          return GestureDetector(
+                              onTap: () {
+                                wishlistProvider.addToWishlist(
+                                    WishListModel(id: allDetails['id']));
+                              },
+                              child: Icon(
+                                !itemExists
+                                    ? CupertinoIcons.heart
+                                    : CupertinoIcons.heart_solid,
+                                size: 28,
+                                color: !itemExists ? null : Colors.red,
+                              ));
+                        })
                   ],
                 ),
                 CachedNetworkImage(

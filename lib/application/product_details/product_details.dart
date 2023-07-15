@@ -1,16 +1,35 @@
-import 'package:flutter/cupertino.dart';
-import 'package:palette_generator/palette_generator.dart';
+// import 'dart:ui';
+import 'package:flutter/material.dart';
+
 
 class ProductDetailProvider extends ChangeNotifier {
   Color? dominantColor;
-  void retrieveDominantColor(imageColor) async {
-    final PaletteGenerator paletteGenerator =
-        await PaletteGenerator.fromImageProvider(
-      NetworkImage(imageColor),
-      size: const Size(200, 200),
-    );
+  int? currentIndex = 0;
 
-    dominantColor = paletteGenerator.dominantColor!.color;
+  void changeIndex(int index) {
+    currentIndex = index;
     notifyListeners();
   }
+
+  void retrieveDominantColor(imageColor) async {
+    // ReceivePort receivePort = ReceivePort();
+    // await Isolate.spawn(
+    //     _retrieveDominantColorIsolate, [imageColor, receivePort.sendPort]);
+    // await for (var color in receivePort) {
+    //   dominantColor = color;
+    //   notifyListeners();
+    // }
+  }
+
+  // void _retrieveDominantColorIsolate(List args) async {
+  //   String imageColor = args[0];
+  //   SendPort sendPort = args[1];
+  //   final PaletteGenerator paletteGenerator =
+  //       await PaletteGenerator.fromImageProvider(
+  //     NetworkImage(imageColor),
+  //     size: const Size(10, 10),
+  //   );
+  //   Color dominantColor = paletteGenerator.dominantColor!.color;
+  //   sendPort.send(dominantColor);
+  // }
 }

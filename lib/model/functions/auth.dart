@@ -43,7 +43,7 @@ class Auth {
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
-    FirebaseAuth.instance.signInWithCredential(credential);
+    // FirebaseAuth.instance.signInWithCredential(credential);
     UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
     log('User signed in with Google: ${userCredential.user?.displayName}');

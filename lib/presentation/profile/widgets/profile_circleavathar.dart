@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,8 +24,9 @@ class ProfieCircleAvathar extends StatelessWidget {
               shape: BoxShape.circle,
               elevation: 3,
               child: CircleAvatar(
-                backgroundImage:
-                    const AssetImage('assets/images/defaultDp.jpg'),
+                backgroundImage: userImage.isEmpty || userImage == ''
+                    ? const AssetImage('assets/images/defaultDp.jpg')
+                    : NetworkImage(userImage) as ImageProvider,
                 radius: 250.r,
               ),
             ),
@@ -48,3 +50,5 @@ class ProfieCircleAvathar extends StatelessWidget {
     );
   }
 }
+
+final String userImage = FirebaseAuth.instance.currentUser!.photoURL ?? '';
