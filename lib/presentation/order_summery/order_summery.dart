@@ -1,16 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce_store/application/address/address_provider.dart';
+import 'package:e_commerce_store/application/cart/cart_provider.dart';
+import 'package:e_commerce_store/core/colors/app_color.dart';
 import 'package:e_commerce_store/core/constants.dart';
+import 'package:e_commerce_store/presentation/address/address.dart';
+import 'package:e_commerce_store/presentation/cart/widget/cart_listview.dart';
 import 'package:e_commerce_store/presentation/order_summery/widgets/adddress_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../core/colors/app_color.dart';
-import '../cart/widget/cart_item_card.dart';
-import '../payment/payment_method.dart';
+import 'package:provider/provider.dart';
+import 'widgets/continue_order_button.dart';
 
 class ScreenOrderSummery extends StatelessWidget {
   const ScreenOrderSummery({super.key});
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<AddressProvider>(context, listen: false).getDefaultAddress();
+    });
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -25,12 +35,67 @@ class ScreenOrderSummery extends StatelessWidget {
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0).r,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const AddressCard(),
+                Consumer<AddressProvider>(
+                    builder: (context, value, child) =>
+                        value.selectedAddressId.isNotEmpty
+                            ? StreamBuilder(
+                                stream: Provider.of<AddressProvider>(context,
+                                        listen: false)
+                                    .getSelectedAddressStream(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                        child: CircularProgressIndicator());
+                                  }
+                                  // final addressData = snapshot.data?.data();
+                                
+                                  if (snapshot.hasError) {
+                                    return const Center(
+                                        child: Text('Error fetching data'));
+                                  }
+                                  return AddressCard(data: snapshot.data);
+                                })
+                            : Container(
+                                padding: const EdgeInsets.all(25).r,
+                                decoration: BoxDecoration(
+                                    border: Border.all(),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Center(
+                                      child: Text('No Address were added',
+                                          style: TextStyle(fontSize: 20)),
+                                    ),
+                                    TextButton.icon(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  const ScreenAddAddress(),
+                                            ));
+                                      },
+                                      icon: const Icon(CupertinoIcons.add),
+                                      label: const Text(
+                                        'Add Address',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      style: ButtonStyle(
+                                          foregroundColor:
+                                              MaterialStateProperty.all(
+                                                  AppConstantsColor
+                                                      .materialThemeColor)),
+                                    )
+                                  ],
+                                ),
+                              )),
                 const SizedBox(height: 10),
                 Text(
                   'Items',
@@ -38,40 +103,30 @@ class ScreenOrderSummery extends StatelessWidget {
                       TextStyle(fontSize: 60.sp, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 10),
-                // ignore: avoid_unnecessary_containers
-                Container(
-                  child: ListView.separated(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) => const CartItemCard(),
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 10),
-                    itemCount: 1,
-                  ),
+                SizedBox(
+                  height: 1100.h,
+                  child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      stream: FirebaseFirestore.instance
+                          .collection('products')
+                          .where('id',
+                              whereIn: Provider.of<CartProvider>(context,
+                                      listen: false)
+                                  .ids)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        if (snapshot.hasError) {
+                          return const Text('Somthing went wrong');
+                        }
+                        return CartListView(snapshot: snapshot);
+                      }),
                 ),
-                constSizedBox20,
-                Align(
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        backgroundColor: AppConstantsColor.materialThemeColor,
-                        foregroundColor: AppConstantsColor.lightTextColor,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ScreenPaymet(),
-                            ));
-                      },
-                      child: const Text(
-                        'Continue With Order',
-                        style: TextStyle(fontSize: 25),
-                      )),
-                ),
+                constSizedBox10,
+                const ContinueOrderButton(),
                 constSizedBox10,
               ],
             ),

@@ -1,4 +1,7 @@
+import 'package:e_commerce_store/application/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import '../../../core/colors/app_color.dart';
 import '../../../widgets/price_widget.dart';
 import '../../order_summery/order_summery.dart';
@@ -18,7 +21,7 @@ class CheckoutWidget extends StatelessWidget {
         ),
         const PriceWidget(
           fontSize: 25,
-          price: '\$200',
+          price: '200',
         ),
         const Spacer(),
         ElevatedButton(
@@ -31,12 +34,15 @@ class CheckoutWidget extends StatelessWidget {
               foregroundColor: AppConstantsColor.lightTextColor,
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ScreenOrderSummery(),
-                ),
-              );
+              Provider.of<CartProvider>(context, listen: false).ids.isNotEmpty
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ScreenOrderSummery(),
+                      ),
+                    )
+                  : Fluttertoast.showToast(
+                      msg: 'Add some items in cart to checkout');
             },
             child: const Text(
               'Checkout',

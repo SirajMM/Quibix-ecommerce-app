@@ -1,11 +1,16 @@
+import 'package:e_commerce_store/application/address/address_provider.dart';
+import 'package:e_commerce_store/presentation/address/widgets/edite_or_add_address.dart';
+import 'package:e_commerce_store/presentation/address/functions/address_functions.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import '../../../core/constants.dart';
 import '../../order_summery/widgets/custom_text.dart';
 
 class AddAddressCard extends StatelessWidget {
-  const AddAddressCard({super.key});
-
+  const AddAddressCard({super.key, this.data});
+  final data;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -29,30 +34,41 @@ class AddAddressCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   constSizedBox10,
-                  const CustomText(
-                      title: 'Street', subTitle: '3512 pearl street'),
+                  CustomText(title: 'Name', subTitle: data['name']),
                   constSizedBox10,
-                  const CustomText(title: 'City', subTitle: 'Nagarcoil'),
+                  CustomText(title: 'City', subTitle: data['city']),
                   constSizedBox10,
-                  const CustomText(title: 'State', subTitle: 'Tamil Nadu'),
+                  CustomText(title: 'State', subTitle: data['state']),
                   constSizedBox10,
-                  const CustomText(
-                      title: 'Phone number', subTitle: '8870732922'),
+                  CustomText(
+                      title: 'Phone number',
+                      subTitle: data['phoneNumber'].toString()),
                   constSizedBox10,
-                  const CustomText(title: 'Zip code', subTitle: '685607'),
+                  CustomText(
+                      title: 'Zip code', subTitle: data['pin code'].toString()),
                   constSizedBox10,
-                  const CustomText(title: 'Country code', subTitle: '+91'),
+                  CustomText(
+                      title: 'Country code', subTitle: data['country code']),
                   constSizedBox10,
-                  const CustomText(title: 'Country', subTitle: 'India'),
+                  CustomText(
+                      title: 'Permanent Address',
+                      subTitle: data['permanent adress']),
                 ],
               ),
               Positioned(
                 top: 0,
                 right: 30,
-                // height: 25,
                 width: 70,
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) =>
+                              EditOrAddAddress(editOrAdd: false, data: data),
+                        ));
+                  },
                   icon: const Icon(Icons.edit),
                 ),
               ),
@@ -60,7 +76,11 @@ class AddAddressCard extends StatelessWidget {
                 top: 0,
                 right: 0,
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    AdressFunctions().detleteShowDialoge(context, data['id']);
+                    Provider.of<AddressProvider>(context, listen: false)
+                        .getDefaultAddress();
+                  },
                   icon: const Icon(
                     Icons.delete_forever_outlined,
                     color: Colors.red,

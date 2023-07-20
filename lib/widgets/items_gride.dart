@@ -13,6 +13,7 @@ class ItemsGrid extends StatelessWidget {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: products,
         builder: (context, snapshot) {
+          
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(

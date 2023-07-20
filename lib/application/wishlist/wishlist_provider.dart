@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../model/wishlist_model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class WishListProvider extends ChangeNotifier {
   List<dynamic> existingProducts = [];
@@ -41,13 +42,15 @@ class WishListProvider extends ChangeNotifier {
 
           if (existingProducts.contains(products.id)) {
             existingProducts.remove(products.id);
+            Fluttertoast.showToast(msg: 'Removed from whishlist');
           } else {
             existingProducts.add(products.id);
+            Fluttertoast.showToast(msg: 'Added to wishlist');
           }
 
-          await docRef.set({'products': existingProducts});
+          await docRef.update({'products': existingProducts});
         } else {
-          await docRef.set({
+          await docRef.update({
             'products': [products.id]
           });
         }

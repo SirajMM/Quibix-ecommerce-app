@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce_store/application/product_details/product_details.dart';
 import 'package:e_commerce_store/core/colors/app_color.dart';
 import 'package:e_commerce_store/core/constants.dart';
 import 'package:e_commerce_store/presentation/product_detail/widgets/cart_button.dart';
+import 'package:e_commerce_store/presentation/product_detail/widgets/slide_indicator.dart';
 import 'package:e_commerce_store/widgets/price_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'color_dot.dart';
 import 'product_image.dart';
 
@@ -69,30 +67,11 @@ class Body extends StatelessWidget {
           SizedBox(
             height: 200.h,
           ),
-          const CartButton(),
+          CartButton(product: details),
         ],
       ),
     );
   }
 }
 
-class SlideIndicator extends StatelessWidget {
-  const SlideIndicator({
-    super.key,
-    required this.details,
-  });
 
-  final DocumentSnapshot details;
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      child: AnimatedSmoothIndicator(
-          effect: const ExpandingDotsEffect(
-              dotHeight: 6, dotWidth: 8, activeDotColor: Colors.black),
-          activeIndex:
-              Provider.of<ProductDetailProvider>(context).currentIndex!,
-          count: details['imageList'].length),
-    );
-  }
-}

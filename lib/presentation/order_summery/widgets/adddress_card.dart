@@ -7,8 +7,8 @@ import '../../address/address.dart';
 import 'custom_text.dart';
 
 class AddressCard extends StatelessWidget {
-  const AddressCard({super.key});
-
+  const AddressCard({super.key, required this.data});
+  final data;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -32,21 +32,25 @@ class AddressCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   constSizedBox10,
-                  const CustomText(
-                      title: 'Street', subTitle: '3512 pearl street'),
+                  CustomText(title: 'Name', subTitle: data['name']),
                   constSizedBox10,
-                  const CustomText(title: 'City', subTitle: 'Nagarcoil'),
+                  CustomText(title: 'City', subTitle: data['city']),
                   constSizedBox10,
-                  const CustomText(title: 'State', subTitle: 'Tamil Nadu'),
+                  CustomText(title: 'State', subTitle: data['state']),
                   constSizedBox10,
-                  const CustomText(
-                      title: 'Phone number', subTitle: '8870732922'),
+                  CustomText(
+                      title: 'Phone number',
+                      subTitle: data['phoneNumber'].toString()),
                   constSizedBox10,
-                  const CustomText(title: 'Zip code', subTitle: '685607'),
+                  CustomText(
+                      title: 'Pin code', subTitle: data['pin code'].toString()),
                   constSizedBox10,
-                  const CustomText(title: 'Country code', subTitle: '+91'),
+                  CustomText(
+                      title: 'Country code', subTitle: data['country code']),
                   constSizedBox10,
-                  const CustomText(title: 'Country', subTitle: 'India'),
+                  CustomText(
+                      title: 'Permanent Address',
+                      subTitle: data['permanent adress']),
                 ],
               ),
               Positioned(
@@ -63,7 +67,11 @@ class AddressCard extends StatelessWidget {
                     elevation: 2,
                   ),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ScreenAddAddress(),));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ScreenAddAddress(),
+                        ));
                   },
                   child: const Text(
                     'Change',

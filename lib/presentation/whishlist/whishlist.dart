@@ -20,7 +20,6 @@ class _ScreenWhishListState extends State<ScreenWhishList> {
       FirebaseFirestore.instance.collection('users').doc(userId);
 
   final List<String> ids = [];
- 
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +36,15 @@ class _ScreenWhishListState extends State<ScreenWhishList> {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.0.h),
         child: FutureBuilder<List<String>>(
-          future: Provider.of<WishListProvider>(context).getdocIds(ids, wishlistRefe),
+          future: Provider.of<WishListProvider>(context)
+              .getdocIds(ids, wishlistRefe),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                   child: CircularProgressIndicator(
                 strokeWidth: 2,
               ));
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
             } else {
-              // final ids = snapshot.data ?? [];
-
               if (ids.isEmpty) {
                 return const Center(
                   child: Text(

@@ -1,16 +1,20 @@
-// ignore_for_file: file_names
+// ignore_for_file: unused_element
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../application/address/address_provider.dart';
 
-class CartFunctions {
-  static Future<void> dialogBuilder(BuildContext context) {
+class AdressFunctions {
+  Future<void> detleteShowDialoge(BuildContext ctx, id) {
     return showDialog<void>(
-      context: context,
+      context: ctx,
       builder: (BuildContext context) {
         return AlertDialog(
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
           title: const Text('Delete ?'),
           content: const Text(
-            'Are you sure want to delete the item.',
+            'Are you sure want to delete address.',
           ),
           actions: <Widget>[
             TextButton(
@@ -31,7 +35,9 @@ class CartFunctions {
                 style: TextStyle(color: Colors.red),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                Provider.of<AddressProvider>(context, listen: false)
+                    .deleteAddress(id)
+                    .then((value) => Navigator.pop(context));
               },
             ),
           ],

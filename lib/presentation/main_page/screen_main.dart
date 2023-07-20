@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:e_commerce_store/presentation/main_page/widgets/bottomnav.dart';
 import 'package:flutter/material.dart';
-import '../cart/cart.dart';
+import '../cart/cart_screen.dart';
 import '../home/home_screen.dart';
 import '../orders/my_orders.dart';
 import '../whishlist/whishlist.dart';
@@ -21,7 +21,7 @@ class ScreenMain extends StatelessWidget {
       body: ValueListenableBuilder(
         valueListenable: indexChangeNotifier,
         builder: (context, index, child) => PageTransitionSwitcher(
-            duration: const Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 700),
             transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
                 FadeThroughTransition(
                     animation: primaryAnimation,

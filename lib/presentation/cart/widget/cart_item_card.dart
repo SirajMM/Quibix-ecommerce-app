@@ -1,24 +1,23 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce_store/application/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:provider/provider.dart';
 import '../../../core/colors/app_color.dart';
 import '../../../widgets/price_widget.dart';
+import 'item_count.dart';
 
-int count = 1;
-
-class CartItemCard extends StatefulWidget {
+class CartItemCard extends StatelessWidget {
   const CartItemCard({
     super.key,
+    required this.data,
   });
 
-  @override
-  State<CartItemCard> createState() => _CartItemCardState();
-}
-
-class _CartItemCardState extends State<CartItemCard> {
+  final DocumentSnapshot data;
   @override
   Widget build(BuildContext context) {
+    int price = int.parse(data['price']);
+    // Provider.of<CartProvider>(context, listen: false).getTheItemCount(data);
     return Material(
       elevation: 3,
       borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -37,12 +36,18 @@ class _CartItemCardState extends State<CartItemCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "APPLE 2020 Macbook Air M1 -\n(8 GB/256 GB SSD/Mac OS Big Sur)",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w600, fontSize: 45.sp),
+                  Expanded(
+                    child: SizedBox(
+                      width: 700.w,
+                      child: Text(
+                        data['productname'],
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 55.sp),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                    ),
                   ),
-                  const Spacer(),
                   Row(
                     children: [
                       Container(
@@ -51,57 +56,18 @@ class _CartItemCardState extends State<CartItemCard> {
                         decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                             color: AppConstantsColor.materialThemeColor),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            count > 0
-                                ? InkWell(
-                                    splashColor: Colors.black,
-                                    onTap: () {
-                                      setState(() {
-                                        count--;
-                                      });
-                                    },
-                                    child: Icon(
-                                      CupertinoIcons.minus,
-                                      color: AppConstantsColor.lightTextColor,
-                                      size: 65.sp,
-                                    ),
-                                  )
-                                : Icon(
-                                    Icons.remove,
-                                    color: Colors.grey,
-                                    size: 65.sp,
-                                  ),
-                            Text(
-                              '$count',
-                              style: TextStyle(
-                                  fontSize: 65.sp,
-                                  color: AppConstantsColor.lightTextColor,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  count++;
-                                });
-                              },
-                              child: Icon(
-                                CupertinoIcons.add,
-                                color: AppConstantsColor.lightTextColor,
-                                size: 65.sp,
-                              ),
-                            ),
-                          ],
-                        ),
+                        child: Consumer<CartProvider>(
+                            builder: (context, value, child) =>
+                                ItemCount(data: data['id'])),
                       ),
                       SizedBox(
                         width: 50.sp,
                       ),
-                      const PriceWidget(
-                        fontSize: 24,
-                        price: '\$200',
+                      Consumer<CartProvider>(
+                        builder: (context, value, child) => PriceWidget(
+                          fontSize: 24,
+                          price: '${value.itemCount * price}',
+                        ),
                       )
                     ],
                   )
@@ -109,12 +75,12 @@ class _CartItemCardState extends State<CartItemCard> {
               ),
               const Spacer(),
               Container(
-                height: 240.h,
-                width: 240.w,
-                decoration: const BoxDecoration(
+                height: 250.h,
+                width: 250.w,
+                decoration: BoxDecoration(
                   image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/images/images.jpg'),
+                    fit: BoxFit.contain,
+                    image: NetworkImage(data['imageList'][0]),
                   ),
                 ),
               )

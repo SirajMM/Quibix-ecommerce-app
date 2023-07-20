@@ -1,3 +1,5 @@
+import 'package:e_commerce_store/application/address/address_provider.dart';
+import 'package:e_commerce_store/application/cart/cart_provider.dart';
 import 'package:e_commerce_store/application/login/login_provider.dart';
 import 'package:e_commerce_store/application/product_details/product_details.dart';
 import 'package:e_commerce_store/application/sign_up/sign-up.dart';
@@ -40,6 +42,12 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider<ProductDetailProvider>(
             create: (context) => ProductDetailProvider(),
+          ),
+          ChangeNotifierProvider<CartProvider>(
+            create: (context) => CartProvider(),
+          ),
+          ChangeNotifierProvider<AddressProvider>(
+            create: (context) => AddressProvider(),
           )
         ],
         builder: (context, child) => MaterialApp(

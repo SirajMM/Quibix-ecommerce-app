@@ -10,7 +10,9 @@ class Auth {
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
   Future<void> signInWithEmailAndPassword(
-      {required String email, required String password,required context}) async {
+      {required String email,
+      required String password,
+      required context}) async {
     await _firebaseAuth
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) => Navigator.of(context).pushReplacement(
@@ -34,6 +36,7 @@ class Auth {
   Future<void> signOut1() async {
     await _firebaseAuth.signOut();
     await GoogleSignIn().signOut();
+    // currentUser!.delete();
   }
 
   Future<void> signInWithGoogle() async {

@@ -27,8 +27,6 @@ final TextEditingController confirmPaswordController = TextEditingController();
 TextEditingController nameController = TextEditingController();
 String errorMessage = '';
 
-final GlobalKey<FormState> _key = GlobalKey<FormState>();
-
 class _ScreenSignUpState extends State<ScreenSignUp> {
   @override
   Widget build(BuildContext context) {
@@ -157,7 +155,7 @@ class _ScreenSignUpState extends State<ScreenSignUp> {
                       if (_key.currentState!.validate()) {
                         createUserWithEmailAndpassword();
                       }
-                      
+
                       emailController.clear();
                       passwordController.clear();
                       confirmPaswordController.clear();
@@ -206,3 +204,5 @@ String? validateConfirmPassword(confirmPaswordController) {
 
   return null;
 }
+
+final GlobalKey<FormState> _key = GlobalKey<FormState>();

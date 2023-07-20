@@ -1,7 +1,7 @@
 import 'package:e_commerce_store/core/colors/app_color.dart';
 import 'package:e_commerce_store/core/constants.dart';
 import 'package:e_commerce_store/presentation/address/address.dart';
-import 'package:e_commerce_store/presentation/cart/cart.dart';
+import 'package:e_commerce_store/presentation/cart/cart_screen.dart';
 import 'package:e_commerce_store/presentation/orders/my_orders.dart';
 import 'package:e_commerce_store/presentation/profile/widgets/profile_circleavathar.dart';
 import 'package:e_commerce_store/presentation/profile/widgets/profile_sttings_tile.dart';

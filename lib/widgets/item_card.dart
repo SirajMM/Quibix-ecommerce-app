@@ -23,11 +23,19 @@ class ItemCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            CupertinoPageRoute(
-              fullscreenDialog: true,
-              builder: (context) => ScreenProductDetails(details: allDetails),
-            ));
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                ScreenProductDetails(details: allDetails),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return ScaleTransition(
+                scale: animation,
+                child: child,
+              );
+            },
+          ),
+        );
       },
       child: Card(
           surfaceTintColor: Colors.transparent,
