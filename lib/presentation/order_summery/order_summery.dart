@@ -53,7 +53,7 @@ class ScreenOrderSummery extends StatelessWidget {
                                     return const Center(
                                         child: CircularProgressIndicator());
                                   }
-                                  // final addressData = snapshot.data?.data();
+                                  
                                 
                                   if (snapshot.hasError) {
                                     return const Center(
@@ -114,6 +114,7 @@ class ScreenOrderSummery extends StatelessWidget {
                                   .ids)
                           .snapshots(),
                       builder: (context, snapshot) {
+
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return const Center(
@@ -126,7 +127,7 @@ class ScreenOrderSummery extends StatelessWidget {
                       }),
                 ),
                 constSizedBox10,
-                const ContinueOrderButton(),
+                 const ContinueOrderButton(),
                 constSizedBox10,
               ],
             ),

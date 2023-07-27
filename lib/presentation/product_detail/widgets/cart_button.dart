@@ -4,7 +4,6 @@ import 'package:e_commerce_store/model/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
 import '../../../core/colors/app_color.dart';
 
 class CartButton extends StatelessWidget {
@@ -26,8 +25,13 @@ class CartButton extends StatelessWidget {
           fixedSize: MaterialStateProperty.all(Size(600.w, 120.h)),
         ),
         onPressed: () {
-          Provider.of<CartProvider>(context, listen: false)
-              .addToCart(CartModel(id: product['id']));
+          Provider.of<CartProvider>(context, listen: false).addToCart(CartModel(
+              id: product['id'],
+              color: product['color'] ?? [],
+              count: 1,
+              price: int.parse(product['price']),
+              quantity: int.parse(product['quantity'] ?? 0),
+              totalPrice: int.parse(product['price'])));
           Provider.of<CartProvider>(context, listen: false).getDocId();
         },
         icon: const Icon(Icons.shopping_cart),

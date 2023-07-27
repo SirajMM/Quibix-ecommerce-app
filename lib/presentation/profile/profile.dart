@@ -10,7 +10,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'privacy_policy/privacy_policy.dart';
 import 'functions/profile_functions.dart';
+import 'terms_and_conditions/terms_and_conditions.dart';
 import 'widgets/background_design.dart';
 
 class ScreenProfile extends StatelessWidget {
@@ -105,14 +107,29 @@ class ScreenProfile extends StatelessWidget {
                           },
                         ),
                         constSizedBox10,
-                        const ProfileSettingsTile(
+                        ProfileSettingsTile(
                           icons: Icons.privacy_tip_outlined,
                           text: 'Privacy Policy',
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const PrivacyPolicy(),
+                                ));
+                          },
                         ),
                         constSizedBox10,
-                        const ProfileSettingsTile(
+                        ProfileSettingsTile(
                           icons: Icons.description_outlined,
                           text: 'Terms And Conditions',
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const TermsAndConditions(),
+                                ));
+                          },
                         ),
                         constSizedBox10,
                         ProfileSettingsTile(

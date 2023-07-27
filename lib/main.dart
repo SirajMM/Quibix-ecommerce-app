@@ -1,6 +1,7 @@
 import 'package:e_commerce_store/application/address/address_provider.dart';
 import 'package:e_commerce_store/application/cart/cart_provider.dart';
 import 'package:e_commerce_store/application/login/login_provider.dart';
+import 'package:e_commerce_store/application/orders/orders_provider.dart';
 import 'package:e_commerce_store/application/product_details/product_details.dart';
 import 'package:e_commerce_store/application/sign_up/sign-up.dart';
 import 'package:e_commerce_store/widgets/login_or_home/login_or_home.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import 'application/order_history/order_history_provider.dart';
 import 'application/wishlist/wishlist_provider.dart';
 
 void main() async {
@@ -48,6 +50,12 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider<AddressProvider>(
             create: (context) => AddressProvider(),
+          ),
+          ChangeNotifierProvider<OrdersProvider>(
+            create: (context) => OrdersProvider(),
+          ),
+          ChangeNotifierProvider<OrderHistoryProvider>(
+            create: (context) => OrderHistoryProvider(),
           )
         ],
         builder: (context, child) => MaterialApp(

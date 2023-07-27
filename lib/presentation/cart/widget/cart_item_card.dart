@@ -11,13 +11,13 @@ class CartItemCard extends StatelessWidget {
   const CartItemCard({
     super.key,
     required this.data,
+    required this.index,
   });
-
+  final int index;
   final DocumentSnapshot data;
   @override
   Widget build(BuildContext context) {
     int price = int.parse(data['price']);
-    // Provider.of<CartProvider>(context, listen: false).getTheItemCount(data);
     return Material(
       elevation: 3,
       borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -51,14 +51,16 @@ class CartItemCard extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        height: 90.h,
+                        height: 100.h,
                         width: 350.w,
                         decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                             color: AppConstantsColor.materialThemeColor),
                         child: Consumer<CartProvider>(
-                            builder: (context, value, child) =>
-                                ItemCount(data: data['id'])),
+                            builder: (context, value, child) => ItemCount(
+                                  id: data['id'],
+                                  index: index,
+                                )),
                       ),
                       SizedBox(
                         width: 50.sp,
@@ -66,7 +68,7 @@ class CartItemCard extends StatelessWidget {
                       Consumer<CartProvider>(
                         builder: (context, value, child) => PriceWidget(
                           fontSize: 24,
-                          price: '${value.itemCount * price}',
+                          price: '${value.itemCounts[index] * price}',
                         ),
                       )
                     ],

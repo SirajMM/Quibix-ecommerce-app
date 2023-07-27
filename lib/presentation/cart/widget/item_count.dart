@@ -8,45 +8,46 @@ import '../../../core/colors/app_color.dart';
 class ItemCount extends StatelessWidget {
   const ItemCount({
     super.key,
-    required this.data,
+    required this.id,
+    required this.index,
   });
-  final data;
+  final String id;
+  final int index;
+
   @override
   Widget build(BuildContext context) {
-    final cartProvider = Provider.of<CartProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    List itemcount =
+        cartProvider.itemCounts.isEmpty ? [1] : cartProvider.itemCounts;
+    cartProvider.getTotalPrice();
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        cartProvider.itemCount > 1
-            ? InkWell(
-                splashColor: Colors.black,
-                onTap: () {
-                  cartProvider.onItemCountDecrement();
-                },
-                child: Icon(
-                  CupertinoIcons.minus,
-                  color: AppConstantsColor.lightTextColor,
-                  size: 65.sp,
-                ),
-              )
-            : Icon(
-                Icons.remove,
-                color: Colors.grey,
-                size: 65.sp,
-              ),
+        IconButton(
+          splashColor: Colors.black,
+          onPressed: () {
+            cartProvider.onItemCountDecrement(index, id);
+          },
+          icon: Icon(
+            CupertinoIcons.minus,
+            color: AppConstantsColor.lightTextColor,
+            size: 65.sp,
+          ),
+        ),
         Text(
-          cartProvider.itemCount.toString(),
+          itemcount[index].toString(),
           style: TextStyle(
               fontSize: 65.sp,
               color: AppConstantsColor.lightTextColor,
               fontWeight: FontWeight.w600),
         ),
-        InkWell(
-          onTap: () {
-            cartProvider.onItemCountIncrement(data);
+        IconButton(
+          onPressed: () {
+            cartProvider.onItemCountIncrement(index, id);
+            debugPrint(itemcount.toString());
           },
-          child: Icon(
+          icon: Icon(
             CupertinoIcons.add,
             color: AppConstantsColor.lightTextColor,
             size: 65.sp,

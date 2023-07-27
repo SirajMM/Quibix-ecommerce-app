@@ -6,12 +6,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class CartProvider extends ChangeNotifier {
   List _ids = [];
-  late var _itemCount = 1;
+  int totalPrice = 0;
+  List<int> itemCounts = [];
 
-  int get itemCount => _itemCount;
   List get ids => _ids;
   final currentUser = FirebaseAuth.instance.currentUser;
-  
+
   void addToCart(CartModel cartItem) async {
     if (currentUser != null) {
       final docRef = FirebaseFirestore.instance
@@ -19,35 +19,42 @@ class CartProvider extends ChangeNotifier {
           .doc(currentUser!.email)
           .collection('cartItems');
 
-      await docRef.get().then((snapshot) async {
+      try {
+        final snapshot = await docRef.get();
         final data = snapshot.docs;
 
         if (data.isNotEmpty) {
-          List<dynamic> existingItem = data.first.get('cartList');
-          if (existingItem.contains(cartItem.id)) {
+          List<String> existingItems = data.map((doc) => doc.id).toList();
+          if (existingItems.contains(cartItem.id)) {
             Fluttertoast.showToast(msg: 'Item already in cart');
           } else {
-            existingItem.add(cartItem.id);
-            Fluttertoast.showToast(msg: 'Item added to cart');
+            existingItems.add(cartItem.id);
+            Fluttertoast.showToast(msg: 'Item added to cart 🛒');
           }
-          await docRef
-              .doc(data.first.id)
-              .update({'cartList': existingItem, cartItem.id: 1});
+          await docRef.doc(cartItem.id).set({
+            'cartList': cartItem.id,
+            'price': cartItem.price,
+            'quantity': cartItem.quantity,
+            'totalPrice': cartItem.totalPrice,
+            'color': cartItem.color,
+            'count': cartItem.count
+          });
         } else {
-          await docRef
-              .doc()
-              .set({
-                'cartList': [cartItem.id],
-                cartItem.id: 1
-              })
-              .then((_) => Fluttertoast.showToast(msg: 'Item added to cart'))
-              .catchError((error) =>
-                  Fluttertoast.showToast(msg: 'Failed to add cart: $error'));
+          await docRef.doc(cartItem.id).set({
+            'cartList': cartItem.id,
+            'price': cartItem.price,
+            'quantity': cartItem.quantity,
+            'totalPrice': cartItem.totalPrice,
+            'color': cartItem.color,
+            'count': cartItem.count
+          });
+          Fluttertoast.showToast(msg: 'Item added to cart 🛒');
         }
-      }).catchError((error) {
-        print('Failed to get cart items: $error');
-      });
+      } catch (error) {
+        Fluttertoast.showToast(msg: 'Failed to get cart items: $error');
+      }
     }
+    getItemCounts();
   }
 
   void deleteCartitem(id) async {
@@ -57,11 +64,11 @@ class CartProvider extends ChangeNotifier {
         .doc(currentUser!.email)
         .collection('cartItems');
     await docRef.get().then((value) {
-      final data = value.docs;
-      docRef
-          .doc(data.first.id)
-          .update({'cartList': _ids, id: FieldValue.delete()});
+      docRef.doc(id).delete();
     });
+
+    getItemCounts();
+    getTotalPrice();
     notifyListeners();
   }
 
@@ -72,39 +79,91 @@ class CartProvider extends ChangeNotifier {
         .doc(user!.email)
         .collection('cartItems');
     await cartRef.get().then((value) {
-      for (var doc in value.docs) {
-        _ids = (doc.get('cartList'));
-        // print(doc.get('cartList'));
-      }
+      _ids = value.docs.map((doc) => doc.id).toList();
     });
+
     notifyListeners();
   }
 
-  // getItemCount(id) async {
-  //   final User? user = FirebaseAuth.instance.currentUser;
-  //   // var countlist;
-  //   CollectionReference cartRef = FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(user!.email)
-  //       .collection('cartItems');
-  //   await cartRef.get().then((value) {
-  //     for (var doc in value.docs) {
-  //       _itemCount = (doc.get(id));
-  //       print(_itemCount);
-  //     }
-  //   });
-  //   // notifyListeners();
-  //   // return
-  // }
+  Future<void> getItemCounts() async {
+    final User? user = FirebaseAuth.instance.currentUser;
 
-  onItemCountIncrement(id) {
-    _itemCount++;
-    // getItemCount(id);
+    if (user != null) {
+      try {
+        CollectionReference cartRef = FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.email)
+            .collection('cartItems');
+
+        QuerySnapshot querySnapshot = await cartRef.get();
+        itemCounts.clear();
+        for (var doc in querySnapshot.docs) {
+          itemCounts.add(doc['count']);
+        }
+        debugPrint(itemCounts.toString());
+      } catch (error) {
+        debugPrint('Error getting cart items: $error');
+      }
+    }
+  }
+
+  Future<int> getTotalPrice() async {
+    int totalPrice = 0;
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      try {
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.email)
+            .collection('cartItems')
+            .get();
+
+        for (var doc in querySnapshot.docs) {
+          int? docTotalPrice = doc.get('totalPrice') as int?;
+          if (docTotalPrice != null) {
+            totalPrice += docTotalPrice;
+          }
+        }
+
+        debugPrint(totalPrice.toString());
+        return totalPrice;
+      } catch (error) {
+        debugPrint('Error getting total price: $error');
+        return 0;
+      }
+    }
+
+    return 0;
+  }
+
+  onItemCountIncrement(index, id) async {
+    final CollectionReference cartRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser!.email)
+        .collection('cartItems');
+    final docRef = await cartRef.doc(id).get();
+    int price = docRef.get('price');
+    itemCounts[index] += 1;
+    cartRef.doc(id).update(
+        {'count': itemCounts[index], 'totalPrice': itemCounts[index] * price});
+    debugPrint(itemCounts[index].toString());
     notifyListeners();
   }
 
-  onItemCountDecrement() {
-    _itemCount--;
+  onItemCountDecrement(index, id) async {
+    final CollectionReference cartRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser!.email)
+        .collection('cartItems');
+    final docRef = await cartRef.doc(id).get();
+    int price = docRef.get('price');
+    if (itemCounts[index] > 1) {
+      itemCounts[index] -= 1;
+    }
+
+    cartRef.doc(id).update(
+        {'count': itemCounts[index], 'totalPrice': itemCounts[index] * price});
     notifyListeners();
   }
 }

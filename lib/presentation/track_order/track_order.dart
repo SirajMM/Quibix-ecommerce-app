@@ -56,7 +56,7 @@ class _ScreenTrackOrderState extends State<ScreenTrackOrder> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: OrderTracker(
-                  status: Status.outOfDelivery,
+                  status: Status.order,
                   activeColor: Colors.green,
                   inActiveColor: Colors.grey[300],
                   orderTitleAndDateList: orderList,

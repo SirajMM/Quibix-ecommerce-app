@@ -39,8 +39,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    print('build called');
-
     return TextFormField(
       validator: widget.validator,
       maxLines: widget.maxLines ?? 1,

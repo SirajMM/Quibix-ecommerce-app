@@ -10,7 +10,7 @@ class ContinueOrderButton extends StatelessWidget {
   const ContinueOrderButton({
     super.key,
   });
-
+ 
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -30,7 +30,7 @@ class ContinueOrderButton extends StatelessWidget {
                 ? Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ScreenPaymet(),
+                      builder: (context) =>  ScreenPaymet(),
                     ))
                 : Fluttertoast.showToast(
                     msg: 'Select one address to continue',

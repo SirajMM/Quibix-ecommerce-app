@@ -1,6 +1,6 @@
 // import 'dart:ui';
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
 
 class ProductDetailProvider extends ChangeNotifier {
   Color? dominantColor;
@@ -11,25 +11,30 @@ class ProductDetailProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void retrieveDominantColor(imageColor) async {
-    // ReceivePort receivePort = ReceivePort();
-    // await Isolate.spawn(
-    //     _retrieveDominantColorIsolate, [imageColor, receivePort.sendPort]);
-    // await for (var color in receivePort) {
-    //   dominantColor = color;
-    //   notifyListeners();
-    // }
+  void retrieveDominantColor(String imageColor) async {
+    //   ReceivePort receivePort = ReceivePort();
+    //   await Isolate.spawn(
+    //     retrieveDominantColorIsolate, // Pass the function as the first argument
+    //     [
+    //       receivePort.sendPort,
+    //       imageColor
+    //     ], // Pass the arguments after the function name
+    //   );
+    //   receivePort.listen((color) {
+    //     dominantColor = color;
+    //     notifyListeners();
+    //   });
   }
-
-  // void _retrieveDominantColorIsolate(List args) async {
-  //   String imageColor = args[0];
-  //   SendPort sendPort = args[1];
-  //   final PaletteGenerator paletteGenerator =
-  //       await PaletteGenerator.fromImageProvider(
-  //     NetworkImage(imageColor),
-  //     size: const Size(10, 10),
-  //   );
-  //   Color dominantColor = paletteGenerator.dominantColor!.color;
-  //   sendPort.send(dominantColor);
-  // }
 }
+
+// retrieveDominantColorIsolate(List args) async {
+//   SendPort sendPort = args[0];
+//   String imageColor = args[1];
+//   final PaletteGenerator paletteGenerator =
+//       await PaletteGenerator.fromImageProvider(
+//     NetworkImage(imageColor),
+//     size: const Size(10, 10),
+//   );
+//   Color dominantColor = paletteGenerator.dominantColor!.color;
+//   sendPort.send(dominantColor);
+// }

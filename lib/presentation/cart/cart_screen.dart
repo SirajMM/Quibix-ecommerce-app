@@ -19,6 +19,8 @@ class _ScreenCartState extends State<ScreenCart> {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<CartProvider>(context, listen: false).getDocId();
+      Provider.of<CartProvider>(context, listen: false).getItemCounts();
+      Provider.of<CartProvider>(context, listen: false).getTotalPrice();
     });
     return Scaffold(
       appBar: AppBar(

@@ -19,9 +19,12 @@ class CheckoutWidget extends StatelessWidget {
           'Total : ',
           style: TextStyle(fontSize: 25),
         ),
-        const PriceWidget(
-          fontSize: 25,
-          price: '200',
+        FutureBuilder<int>(
+          future: Provider.of<CartProvider>(context).getTotalPrice(),
+          builder: (context, snapshot) => PriceWidget(
+            fontSize: 25,
+            price: snapshot.data.toString(),
+          ),
         ),
         const Spacer(),
         ElevatedButton(

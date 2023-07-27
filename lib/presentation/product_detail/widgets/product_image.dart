@@ -43,11 +43,14 @@ class _ProductImageState extends State<ProductImage> {
             return CarouselSlider.builder(
               itemCount: widget.details['imageList'].length,
               itemBuilder: (context, index, realIndex) {
-                return Image.network(
-                  widget.details['imageList'][index],
-                  height: 750.0.h,
-                  width: 750.0.w,
-                  fit: BoxFit.contain,
+                return Hero(
+                  tag: widget.details['id'],
+                  child: Image.network(
+                    widget.details['imageList'][index],
+                    height: 750.0.h,
+                    width: 750.0.w,
+                    fit: BoxFit.contain,
+                  ),
                 );
               },
               options: CarouselOptions(

@@ -204,12 +204,7 @@ class SaveAdressButten extends StatelessWidget {
                     ),
                   )
                     .then((value) {
-                    phoneNumberController.clear();
-                    nameController.clear();
-                    addressController.clear();
-                    stateController.clear();
-                    pincodeController.clear();
-                    countryCodeController.clear();
+                    clear();
                     Navigator.pop(context);
                   })
                 : Provider.of<AddressProvider>(context, listen: false)
@@ -221,19 +216,12 @@ class SaveAdressButten extends StatelessWidget {
                           countyCode: countryCodeController.text.trim(),
                           phoneNumber:
                               int.parse(phoneNumberController.text.trim()),
-                          isDefaultAddress: false,
                           state: stateController.text.trim(),
                           city: cityController.text.trim(),
                         ),
                         data['id'])
                     .then((value) {
-                    print(nameController.text);
-                    phoneNumberController.clear();
-                    nameController.clear();
-                    addressController.clear();
-                    stateController.clear();
-                    pincodeController.clear();
-                    countryCodeController.clear();
+                    clear();
                     Navigator.pop(context);
                   });
           }
@@ -255,6 +243,16 @@ class SaveAdressButten extends StatelessWidget {
         ),
         child: const Text('Save'));
   }
+}
+
+clear() {
+  phoneNumberController.clear();
+  cityController.clear();
+  nameController.clear();
+  addressController.clear();
+  stateController.clear();
+  pincodeController.clear();
+  countryCodeController.clear();
 }
 
 GlobalKey<FormState> _formKey1 = GlobalKey<FormState>();

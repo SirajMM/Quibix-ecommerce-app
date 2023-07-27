@@ -22,20 +22,25 @@ class ItemCard extends StatelessWidget {
     final wishlistProvider = Provider.of<WishListProvider>(context);
     return GestureDetector(
       onTap: () {
+        // Navigator.push(
+        //   context,
+        //   PageRouteBuilder(
+        //     pageBuilder: (context, animation, secondaryAnimation) =>
+        //         ScreenProductDetails(details: allDetails),
+        //     transitionsBuilder:
+        //         (context, animation, secondaryAnimation, child) {
+        //       return ScaleTransition(
+        //         scale: animation,
+        //         child: child,
+        //       );
+        //     },
+        //   ),
+        // );
         Navigator.push(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                ScreenProductDetails(details: allDetails),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              return ScaleTransition(
-                scale: animation,
-                child: child,
-              );
-            },
-          ),
-        );
+            context,
+            MaterialPageRoute(
+              builder: (context) => ScreenProductDetails(details: allDetails),
+            ));
       },
       child: Card(
           surfaceTintColor: Colors.transparent,
@@ -81,16 +86,20 @@ class ItemCard extends StatelessWidget {
                         })
                   ],
                 ),
-                CachedNetworkImage(
-                  height: 110,
-                  width: 120,
-                  filterQuality: FilterQuality.high,
-                  fit: BoxFit.contain,
-                  imageUrl: allDetails['imageList'][0],
-                  placeholder: (context, url) => Center(
-                    child: Image.asset('assets/images/loadinganimation.gif'),
+                Hero(
+                  tag: allDetails['id'],
+                  child: CachedNetworkImage(
+                    height: 110,
+                    width: 120,
+                    filterQuality: FilterQuality.high,
+                    fit: BoxFit.contain,
+                    imageUrl: allDetails['imageList'][0],
+                    placeholder: (context, url) => Center(
+                      child: Image.asset('assets/images/loadinganimation.gif'),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
                 constSizedBox10,
                 Row(

@@ -1,4 +1,5 @@
 import 'package:e_commerce_store/presentation/profile/profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../core/colors/app_color.dart';
@@ -47,8 +48,9 @@ class HomeCustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 builder: (context) => const ScreenProfile(),
               ),
             ),
-            child: const CircleAvatar(
-              backgroundImage: AssetImage('assets/images/defaultDp.jpg'),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(
+                  FirebaseAuth.instance.currentUser!.photoURL ?? ''),
             ),
           ),
         ],

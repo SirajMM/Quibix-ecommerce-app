@@ -8,11 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AddressProvider extends ChangeNotifier {
-  // final List _addressList = [];
+ 
   int _selectedAddressIndex = -1;
   String selectedAddressId = '';
   int get selectedAddressIndex => _selectedAddressIndex;
-  // List get addressList => _addressList;
+ 
   final currentUser = FirebaseAuth.instance.currentUser;
   Future<void> addAddress(Address adressModel) async {
     if (currentUser != null) {
@@ -63,7 +63,6 @@ class AddressProvider extends ChangeNotifier {
           'state': adressModel.state,
           'city': adressModel.city,
           'country code': adressModel.countyCode,
-          'isDefaultAddress': adressModel.isDefaultAddress,
           'phoneNumber': adressModel.phoneNumber,
         });
         log('Address added');

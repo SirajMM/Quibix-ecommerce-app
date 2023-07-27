@@ -16,6 +16,12 @@ class ScreenOrders extends StatelessWidget {
           'My Orders',
           style: TextStyle(fontSize: 80.sp, fontWeight: FontWeight.w700),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.history),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20).r,

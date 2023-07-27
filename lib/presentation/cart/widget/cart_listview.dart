@@ -35,7 +35,7 @@ class CartListView extends StatelessWidget {
             )
           ]),
           child: CartItemCard(
-            data: data,
+            data: data,index: index,
           ),
         );
       },

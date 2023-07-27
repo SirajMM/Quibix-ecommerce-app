@@ -45,7 +45,7 @@ class WishListProvider extends ChangeNotifier {
             Fluttertoast.showToast(msg: 'Removed from whishlist');
           } else {
             existingProducts.add(products.id);
-            Fluttertoast.showToast(msg: 'Added to wishlist');
+            Fluttertoast.showToast(msg: 'Added to wishlist ❤️');
           }
 
           await docRef.update({'products': existingProducts});

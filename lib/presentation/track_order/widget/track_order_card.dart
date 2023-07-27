@@ -33,7 +33,7 @@ class TrackOrderCard extends StatelessWidget {
                 decoration: const BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.contain,
-                        image: AssetImage('assets/images/images.jpg'))),
+                        image: AssetImage(''))),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

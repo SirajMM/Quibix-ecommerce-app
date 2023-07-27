@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../core/colors/app_color.dart';
 import '../../../core/constants.dart';
 import '../../track_order/track_order.dart';
@@ -32,9 +31,11 @@ class OdersCustomCard extends StatelessWidget {
                 height: 350.h,
                 width: 350.w,
                 decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.contain,
-                        image: AssetImage('assets/images/images.jpg'))),
+                    // image: DecorationImage(
+                    //   fit: BoxFit.contain,
+                    //   image: AssetImage(''),
+                    // ),
+                    ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
