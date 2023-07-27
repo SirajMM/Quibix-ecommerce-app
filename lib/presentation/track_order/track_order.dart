@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_store/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,8 +8,9 @@ import 'package:order_tracker/order_tracker.dart';
 import 'widget/track_order_card.dart';
 
 class ScreenTrackOrder extends StatefulWidget {
-  const ScreenTrackOrder({Key? key}) : super(key: key);
+  const ScreenTrackOrder({Key? key, required this.data}) : super(key: key);
 
+  final QueryDocumentSnapshot<Map<String, dynamic>> data;
   @override
   State<ScreenTrackOrder> createState() => _ScreenTrackOrderState();
 }
@@ -51,7 +53,7 @@ class _ScreenTrackOrderState extends State<ScreenTrackOrder> {
         padding: const EdgeInsets.all(5.0),
         child: ListView(
           children: [
-            const TrackOrderCard(),
+            TrackOrderCard(data: widget.data),
             constSizedBox10,
             Padding(
               padding: const EdgeInsets.all(8.0),

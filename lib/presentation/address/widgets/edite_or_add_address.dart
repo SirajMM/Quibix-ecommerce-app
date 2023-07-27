@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_store/presentation/login/widgets/text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ import '../../../application/address/address_provider.dart';
 class EditOrAddAddress extends StatelessWidget {
   const EditOrAddAddress({super.key, required this.editOrAdd, this.data});
   final bool editOrAdd;
-  final data;
+  final QueryDocumentSnapshot<Map<String, dynamic>>? data;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +43,7 @@ class EditOrAddAddress extends StatelessWidget {
                         size: 40,
                       )),
                   Text(
-                    editOrAdd ? 'Add New Address' : 'Edite Address',
+                    editOrAdd ? 'Add New Address' : 'Edit Address',
                     style:
                         TextStyle(fontSize: 80.sp, fontWeight: FontWeight.w700),
                   ),
@@ -52,7 +53,7 @@ class EditOrAddAddress extends StatelessWidget {
                     comtroller: nameController,
                     validator: _nameValidator,
                     editeOrAdd: editOrAdd,
-                    textString: data != null ? data['name'] : '',
+                    textString: data != null ? data!['name'] : '',
                   ),
                   constSizedBox10,
                   CustomTextField(
@@ -60,7 +61,7 @@ class EditOrAddAddress extends StatelessWidget {
                     comtroller: cityController,
                     validator: _cityValidator,
                     editeOrAdd: editOrAdd,
-                    textString: data != null ? data['city'] : '',
+                    textString: data != null ? data!['city'] : '',
                   ),
                   constSizedBox10,
                   CustomTextField(
@@ -70,7 +71,7 @@ class EditOrAddAddress extends StatelessWidget {
                     comtroller: addressController,
                     validator: _addressValidator,
                     editeOrAdd: editOrAdd,
-                    textString: data != null ? data['permanent adress'] : '',
+                    textString: data != null ? data!['permanent adress'] : '',
                   ),
                   constSizedBox10,
                   CustomTextField(
@@ -78,7 +79,7 @@ class EditOrAddAddress extends StatelessWidget {
                     comtroller: stateController,
                     validator: _stateValidator,
                     editeOrAdd: editOrAdd,
-                    textString: data != null ? data['state'] : '',
+                    textString: data != null ? data!['state'] : '',
                   ),
                   constSizedBox10,
                   CustomTextField(
@@ -88,7 +89,7 @@ class EditOrAddAddress extends StatelessWidget {
                     validator: _phoneNumberValidator,
                     editeOrAdd: editOrAdd,
                     textString:
-                        data != null ? data['phoneNumber'].toString() : '',
+                        data != null ? data!['phoneNumber'].toString() : '',
                   ),
                   constSizedBox10,
                   CustomTextField(
@@ -97,7 +98,8 @@ class EditOrAddAddress extends StatelessWidget {
                     comtroller: pincodeController,
                     validator: _pincodeValidator,
                     editeOrAdd: editOrAdd,
-                    textString: data != null ? data['pin code'].toString() : '',
+                    textString:
+                        data != null ? data!['pin code'].toString() : '',
                   ),
                   constSizedBox10,
                   CustomTextField(
@@ -106,7 +108,7 @@ class EditOrAddAddress extends StatelessWidget {
                     comtroller: countryCodeController,
                     validator: _countryCodeValidator,
                     editeOrAdd: editOrAdd,
-                    textString: data != null ? data['country code'] : '',
+                    textString: data != null ? data!['country code'] : '',
                   ),
                   constSizedBox20,
                   SaveAdressButten(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:upi_india/upi_india.dart';
 
 Future<void> paymentBottomSheet(
@@ -9,34 +10,43 @@ Future<void> paymentBottomSheet(
   return showModalBottomSheet<void>(
     context: context,
     builder: (BuildContext context) {
-      return ListView(
-        children: [
-          Wrap(
-            children: apps.map<Widget>((UpiApp app) {
-              return GestureDetector(
-                onTap: () {
-                  transaction = initiateTransaction(app, upiIndia);
-                },
-                child: SizedBox(
-                  height: 100,
-                  width: 100,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.memory(
-                        app.icon,
-                        height: 60,
-                        width: 60,
-                      ),
-                      Text(app.name),
-                    ],
+      return Padding(
+        padding: EdgeInsets.only(top: 30.h),
+        child: ListView(
+          children: [
+            const Text(
+              'Choose the option to continue',
+              style: TextStyle(fontSize: 20),
+              textAlign: TextAlign.center,
+            ),
+            Wrap(
+              children: apps.map<Widget>((UpiApp app) {
+                return GestureDetector(
+                  onTap: () {
+                    transaction = initiateTransaction(app, upiIndia);
+                  },
+                  child: SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.memory(
+                          app.icon,
+                          height: 60,
+                          width: 60,
+                        ),
+                        Text(app.name),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }).toList(),
-          )
-        ],
+                );
+              }).toList(),
+            ),
+            
+          ],
+        ),
       );
     },
   );

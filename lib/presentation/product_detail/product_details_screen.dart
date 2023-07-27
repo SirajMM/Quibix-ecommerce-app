@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce_store/application/product_details/product_details.dart';
 import 'package:e_commerce_store/application/wishlist/wishlist_provider.dart';
 import 'package:e_commerce_store/core/colors/app_color.dart';
 import 'package:e_commerce_store/model/wishlist_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../application/product_details/product_details.dart';
 import 'widgets/body_widget.dart';
 
 class ScreenProductDetails extends StatelessWidget {

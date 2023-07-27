@@ -8,6 +8,9 @@ class ProfileFunctions {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          surfaceTintColor: Colors.transparent,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(2))),
           title: const Text('Log Out ?'),
           content: const Text(
             'Are you sure want to log out.',

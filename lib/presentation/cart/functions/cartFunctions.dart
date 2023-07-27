@@ -9,6 +9,9 @@ class CartFunctions {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          surfaceTintColor: Colors.transparent,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(2))),
           title: const Text('Delete ?'),
           content: const Text(
             'Are you sure want to delete the item.',

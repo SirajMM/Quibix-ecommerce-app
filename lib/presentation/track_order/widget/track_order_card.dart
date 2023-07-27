@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_store/widgets/price_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,8 +8,9 @@ import '../../../core/constants.dart';
 class TrackOrderCard extends StatelessWidget {
   const TrackOrderCard({
     super.key,
+    required this.data,
   });
-
+  final QueryDocumentSnapshot<Map<String, dynamic>> data;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -29,20 +31,28 @@ class TrackOrderCard extends StatelessWidget {
             children: [
               Container(
                 height: 350.h,
-                width: 350.w,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.contain,
-                        image: AssetImage(''))),
+                width: 340.w,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: NetworkImage(data['imageList'][0]),
+                  ),
+                ),
               ),
+              const Spacer(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   constSizedBox10,
-                  Text(
-                    "APPLE 2020 Macbook Air M1 -\n(8 GB/256 GB SSD/Mac OS Big Sur)",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w600, fontSize: 45.sp),
+                  SizedBox(
+                    width: 640.w,
+                    child: Text(
+                      data['productname'],
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 45.sp),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
                   ),
                   constSizedBox10,
                   Text(
@@ -54,9 +64,9 @@ class TrackOrderCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const PriceWidget(
+                      PriceWidget(
                         fontSize: 25,
-                        price: '\$200',
+                        price: data['price'],
                       ),
                       SizedBox(
                         width: 60.w,

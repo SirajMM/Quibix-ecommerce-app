@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce_store/application/orders/orders_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import '../../../core/colors/app_color.dart';
 import '../../../core/constants.dart';
 import '../../track_order/track_order.dart';
@@ -7,8 +10,9 @@ import '../../track_order/track_order.dart';
 class OdersCustomCard extends StatelessWidget {
   const OdersCustomCard({
     super.key,
+    required this.data,
   });
-
+  final QueryDocumentSnapshot<Map<String, dynamic>> data;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -29,22 +33,28 @@ class OdersCustomCard extends StatelessWidget {
             children: [
               Container(
                 height: 350.h,
-                width: 350.w,
-                decoration: const BoxDecoration(
-                    // image: DecorationImage(
-                    //   fit: BoxFit.contain,
-                    //   image: AssetImage(''),
-                    // ),
-                    ),
+                width: 330.w,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: NetworkImage(data['imageList'][0]),
+                  ),
+                ),
               ),
+              const Spacer(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   constSizedBox10,
-                  Text(
-                    "APPLE 2020 Macbook Air M1 -\n(8 GB/256 GB SSD/Mac OS Big Sur)",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w600, fontSize: 45.sp),
+                  SizedBox(
+                    width: 629.w,
+                    child: Text(
+                      data['productname'],
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 45.sp),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
                   ),
                   constSizedBox10,
                   Text(
@@ -64,7 +74,8 @@ class OdersCustomCard extends StatelessWidget {
                           elevation: 2,
                         ),
                         onPressed: () {
-                          dialogBuilder(context);
+                          dialogBuilder(context, data['id']);
+                          
                         },
                         child: const Text(
                           'Cancel',
@@ -85,7 +96,8 @@ class OdersCustomCard extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ScreenTrackOrder(),
+                              builder: (context) =>
+                                  ScreenTrackOrder(data: data),
                             ),
                           );
                         },
@@ -106,11 +118,14 @@ class OdersCustomCard extends StatelessWidget {
   }
 }
 
-Future<void> dialogBuilder(BuildContext context) {
+Future<void> dialogBuilder(BuildContext context, String id) {
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
+        surfaceTintColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(2))),
         title: const Text('Cancel Order'),
         content: const Text(
           'Are you sure want to cancel.',
@@ -134,6 +149,8 @@ Future<void> dialogBuilder(BuildContext context) {
               style: TextStyle(color: Colors.red),
             ),
             onPressed: () {
+              Provider.of<OrdersProvider>(context, listen: false)
+                  .cancelOrder(id);
               Navigator.of(context).pop();
             },
           ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_store/application/product_details/product_details.dart';
@@ -45,11 +46,18 @@ class _ProductImageState extends State<ProductImage> {
               itemBuilder: (context, index, realIndex) {
                 return Hero(
                   tag: widget.details['id'],
-                  child: Image.network(
-                    widget.details['imageList'][index],
+                  child: CachedNetworkImage(
+                    imageUrl: widget.details['imageList'][index],
                     height: 750.0.h,
                     width: 750.0.w,
-                    fit: BoxFit.contain,
+                    filterQuality: FilterQuality.high,
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
                 );
               },

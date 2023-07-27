@@ -12,18 +12,18 @@ class ProductDetailProvider extends ChangeNotifier {
   }
 
   void retrieveDominantColor(String imageColor) async {
-    //   ReceivePort receivePort = ReceivePort();
-    //   await Isolate.spawn(
-    //     retrieveDominantColorIsolate, // Pass the function as the first argument
-    //     [
-    //       receivePort.sendPort,
-    //       imageColor
-    //     ], // Pass the arguments after the function name
-    //   );
-    //   receivePort.listen((color) {
-    //     dominantColor = color;
-    //     notifyListeners();
-    //   });
+      // ReceivePort receivePort = ReceivePort();
+      // await Isolate.spawn(
+      //   retrieveDominantColorIsolate, 
+      //   [
+      //     receivePort.sendPort,
+      //     imageColor
+      //   ], // Pass the arguments after the function name
+      // );
+      // receivePort.listen((color) {
+      //   dominantColor = color;
+      //   notifyListeners();
+      // });
   }
 }
 
