@@ -36,7 +36,7 @@ class Auth {
   Future<void> signOut1() async {
     await _firebaseAuth.signOut();
     await GoogleSignIn().signOut();
-    // currentUser!.delete();
+   
   }
 
   Future<void> signInWithGoogle() async {

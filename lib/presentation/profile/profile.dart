@@ -153,4 +153,4 @@ class ScreenProfile extends StatelessWidget {
 }
 
 final String userEmail = FirebaseAuth.instance.currentUser!.email!;
-final String userName = FirebaseAuth.instance.currentUser!.displayName!;
+final String userName = FirebaseAuth.instance.currentUser!.displayName ?? '';

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../core/colors/app_color.dart';
 
 class ProfileSettingsTile extends StatelessWidget {
@@ -29,13 +28,16 @@ class ProfileSettingsTile extends StatelessWidget {
               width: 60.w,
             ),
             Icon(icons),
-            SizedBox(
-              width: 170.w,
-            ),
+            const Spacer(),
             Text(
               text,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            )
+            ),
+            const Spacer(),
+            SizedBox(
+              width: 80.w,
+            ),
           ],
         ),
       ),

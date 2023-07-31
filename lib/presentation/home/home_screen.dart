@@ -1,9 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_store/core/colors/app_color.dart';
-import 'package:e_commerce_store/presentation/home/widgets/home_app_bar.dart';
+import 'package:e_commerce_store/presentation/search/search_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/items_gride.dart';
+import '../profile/profile.dart';
 
 class ScreenHome extends StatefulWidget {
   const ScreenHome({Key? key}) : super(key: key);
@@ -79,12 +82,48 @@ class _ScreenHome extends State<ScreenHome> with TickerProviderStateMixin {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     var respsize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: const HomeCustomAppBar(),
+      // appBar: const HomeCustomAppBar(),
+      appBar: AppBar(
+        elevation: 0,
+        scrolledUnderElevation: .1,
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        title: const Text(
+          'Quibix.',
+          style: TextStyle(fontSize: 35),
+        ),
+        actions: [
+          IconButton(
+              onPressed: () => Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => const ScreenSearch(),
+                    ),
+                  ),
+              icon: const Icon(
+                CupertinoIcons.search,
+                size: 30,
+              )),
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => const ScreenProfile(),
+              ),
+            ),
+            icon: CircleAvatar(
+              radius: 17,
+              backgroundImage: NetworkImage(
+                  FirebaseAuth.instance.currentUser!.photoURL ?? ''),
+            ),
+          )
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
         child: NestedScrollView(

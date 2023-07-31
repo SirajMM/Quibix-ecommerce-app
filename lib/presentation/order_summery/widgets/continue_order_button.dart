@@ -8,9 +8,9 @@ import '../../payment/payment_method.dart';
 
 class ContinueOrderButton extends StatelessWidget {
   const ContinueOrderButton({
-    super.key,
+    super.key, required this.totalPrice,
   });
- 
+ final int totalPrice;
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -30,7 +30,7 @@ class ContinueOrderButton extends StatelessWidget {
                 ? Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>  ScreenPaymet(),
+                      builder: (context) =>  ScreenPaymet(totalPrice: totalPrice),
                     ))
                 : Fluttertoast.showToast(
                     msg: 'Select one address to continue',

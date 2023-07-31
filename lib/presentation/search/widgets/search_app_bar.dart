@@ -1,12 +1,11 @@
-import 'package:e_commerce_store/presentation/profile/profile.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../core/colors/app_color.dart';
 
-class HomeCustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const HomeCustomAppBar({super.key});
-
+class SearchCustomAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  const SearchCustomAppBar({super.key, required this.onChanged});
+  final void Function(String)? onChanged;
   @override
   Size get preferredSize => const Size.fromHeight(90.0);
   @override
@@ -24,6 +23,7 @@ class HomeCustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               elevation: 5,
               borderRadius: const BorderRadius.all(Radius.circular(20)),
               child: TextField(
+                onChanged: onChanged,
                 decoration: InputDecoration(
                   suffixIcon: Icon(
                     CupertinoIcons.search_circle_fill,
@@ -39,18 +39,6 @@ class HomeCustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
               ),
-            ),
-          ),
-          InkWell(
-            onTap: () => Navigator.push(
-              context,
-              CupertinoPageRoute(
-                builder: (context) => const ScreenProfile(),
-              ),
-            ),
-            child: CircleAvatar(
-              backgroundImage: NetworkImage(
-                  FirebaseAuth.instance.currentUser!.photoURL ?? ''),
             ),
           ),
         ],

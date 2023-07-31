@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce_store/presentation/order_completed/order_completed.dart';
 import 'package:e_commerce_store/presentation/orders/widget/oders_custom_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
 import '../../application/orders/orders_provider.dart';
 
 class ScreenOrders extends StatefulWidget {
@@ -37,7 +37,13 @@ class _ScreenOrdersState extends State<ScreenOrders> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const OrderCompletedScreen(),
+                  ));
+            },
             icon: const Icon(Icons.history),
           )
         ],
@@ -76,7 +82,11 @@ class _ScreenOrdersState extends State<ScreenOrders> {
                     },
                   ),
                 )
-              : const Center(child: Text('Nothing orderd yet'))),
+              : const Center(
+                  child: Text(
+                  'No Item Found',
+                  style: TextStyle(fontSize: 20),
+                ))),
     );
   }
 }

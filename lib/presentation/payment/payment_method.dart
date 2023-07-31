@@ -1,36 +1,66 @@
+import 'dart:developer';
 import 'package:e_commerce_store/core/constants.dart';
 import 'package:e_commerce_store/presentation/payment/widgets/payment_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:upi_india/upi_india.dart';
-
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../application/orders/orders_provider.dart';
-import 'functions/payment_functions.dart';
+import 'functions/payment_funsctions.dart';
 
 class ScreenPaymet extends StatefulWidget {
   const ScreenPaymet({
     super.key,
+    required this.totalPrice,
   });
-
+  final int totalPrice;
   @override
   State<ScreenPaymet> createState() => _ScreenPaymetState();
 }
 
-List<UpiApp>? apps;
-final _upiIndia = UpiIndia();
-Future<UpiResponse>? _transaction;
-
 class _ScreenPaymetState extends State<ScreenPaymet> {
+  Razorpay? _razorpay;
+  _handlePaymentSuccess(PaymentSuccessResponse response) {
+    successShowdialog(context, true);
+    Provider.of<OrdersProvider>(context, listen: false)
+        .orderItemAndDeletFromCart();
+    Fluttertoast.showToast(msg: 'PAYMENT SUCCESS ${response.paymentId}');
+  }
+
+  _handlePaymentError(PaymentFailureResponse response) {
+    successShowdialog(context, false);
+    Fluttertoast.showToast(msg: '${response.message}');
+  }
+
+  _handleExternalWallet(ExternalWalletResponse response) {
+    Fluttertoast.showToast(msg: '${response.walletName}');
+  }
+
+  void makePayment() async {
+    final user = FirebaseAuth.instance.currentUser;
+    var options = {
+      'key': 'rzp_test_3FIWDYW5s3iTMq',
+      'amount': widget.totalPrice * 100,
+      'name': 'Quibix.',
+      'description': 'Item',
+      'prefill': {'contact': '', 'email': '${user!.email}'}
+    };
+    try {
+      _razorpay?.open(options);
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
   @override
   void initState() {
-    _upiIndia.getAllUpiApps(mandatoryTransactionId: false).then((value) {
-      setState(() {
-        apps = value;
-      });
-    }).catchError((e) {
-      apps = [];
-    });
+    _razorpay = Razorpay();
+    _razorpay!.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay!.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay!.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+
     super.initState();
   }
 
@@ -55,11 +85,8 @@ class _ScreenPaymetState extends State<ScreenPaymet> {
               image: 'assets/online-payment-vector.jpg',
               text: 'Online Payment',
               onTap: () {
-                paymentBottomSheet(
-                    context: context,
-                    apps: apps!,
-                    transaction: _transaction,
-                    upiIndia: _upiIndia);
+                makePayment();
+                // successShowdialog(context);
               },
             ),
             constSizedBox20,
@@ -67,12 +94,20 @@ class _ScreenPaymetState extends State<ScreenPaymet> {
               image: 'assets/images/cash_on_delivery.jpg',
               text: 'Cash On Delivery',
               onTap: () {
-                Provider.of<OrdersProvider>(context, listen: false).orderItem();
+                successShowdialog(context, true);
+                Provider.of<OrdersProvider>(context, listen: false)
+                    .orderItemAndDeletFromCart();
               },
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _razorpay!.clear();
+    super.dispose();
   }
 }

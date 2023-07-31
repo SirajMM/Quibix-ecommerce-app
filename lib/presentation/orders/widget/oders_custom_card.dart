@@ -13,6 +13,7 @@ class OdersCustomCard extends StatelessWidget {
     required this.data,
   });
   final QueryDocumentSnapshot<Map<String, dynamic>> data;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -75,7 +76,6 @@ class OdersCustomCard extends StatelessWidget {
                         ),
                         onPressed: () {
                           dialogBuilder(context, data['id']);
-                          
                         },
                         child: const Text(
                           'Cancel',
@@ -151,6 +151,7 @@ Future<void> dialogBuilder(BuildContext context, String id) {
             onPressed: () {
               Provider.of<OrdersProvider>(context, listen: false)
                   .cancelOrder(id);
+
               Navigator.of(context).pop();
             },
           ),

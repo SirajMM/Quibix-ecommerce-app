@@ -6,6 +6,7 @@ import '../../../core/colors/app_color.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(

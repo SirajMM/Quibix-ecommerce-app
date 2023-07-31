@@ -18,7 +18,9 @@ class WishListProvider extends ChangeNotifier {
       final DocumentReference userDoc = userCollection.doc(currentUser.email);
 
       final DocumentSnapshot userSnapshot = await userDoc.get();
-      existingProducts = List.from(userSnapshot.get('products'));
+      if (userSnapshot.exists||userSnapshot!=null) {
+        existingProducts = List.from(userSnapshot.get('products'));
+      }
 
       log(existingProducts.toString());
       return existingProducts.contains(id);

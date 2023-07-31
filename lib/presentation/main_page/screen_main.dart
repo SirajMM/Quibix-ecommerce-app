@@ -8,6 +8,7 @@ import '../whishlist/whishlist.dart';
 
 class ScreenMain extends StatelessWidget {
   ScreenMain({super.key});
+
   final List<Widget> _screens = [
     const ScreenHome(),
     const ScreenWhishList(),
@@ -16,6 +17,7 @@ class ScreenMain extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    indexChangeNotifier.value = 0;
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: ValueListenableBuilder(

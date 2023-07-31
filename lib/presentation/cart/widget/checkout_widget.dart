@@ -13,6 +13,7 @@ class CheckoutWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int? totalPrice;
     return Row(
       children: [
         const Text(
@@ -20,12 +21,14 @@ class CheckoutWidget extends StatelessWidget {
           style: TextStyle(fontSize: 25),
         ),
         FutureBuilder<int>(
-          future: Provider.of<CartProvider>(context).getTotalPrice(),
-          builder: (context, snapshot) => PriceWidget(
-            fontSize: 25,
-            price: snapshot.data.toString(),
-          ),
-        ),
+            future: Provider.of<CartProvider>(context).getTotalPrice(),
+            builder: (context, snapshot) {
+              totalPrice = snapshot.data ?? 0;
+              return PriceWidget(
+                fontSize: 25,
+                price: snapshot.data.toString(),
+              );
+            }),
         const Spacer(),
         ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -41,7 +44,8 @@ class CheckoutWidget extends StatelessWidget {
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ScreenOrderSummery(),
+                        builder: (context) =>
+                            ScreenOrderSummery(totalPrice: totalPrice!),
                       ),
                     )
                   : Fluttertoast.showToast(

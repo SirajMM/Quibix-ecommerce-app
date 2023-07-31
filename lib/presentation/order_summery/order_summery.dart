@@ -13,8 +13,8 @@ import 'package:provider/provider.dart';
 import 'widgets/continue_order_button.dart';
 
 class ScreenOrderSummery extends StatelessWidget {
-  const ScreenOrderSummery({super.key});
-
+  const ScreenOrderSummery({super.key, required this.totalPrice});
+  final int totalPrice;
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -53,8 +53,7 @@ class ScreenOrderSummery extends StatelessWidget {
                                     return const Center(
                                         child: CircularProgressIndicator());
                                   }
-                                  
-                                
+
                                   if (snapshot.hasError) {
                                     return const Center(
                                         child: Text('Error fetching data'));
@@ -114,7 +113,6 @@ class ScreenOrderSummery extends StatelessWidget {
                                   .ids)
                           .snapshots(),
                       builder: (context, snapshot) {
-
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return const Center(
@@ -127,7 +125,7 @@ class ScreenOrderSummery extends StatelessWidget {
                       }),
                 ),
                 constSizedBox10,
-                 const ContinueOrderButton(),
+                ContinueOrderButton(totalPrice: totalPrice),
                 constSizedBox10,
               ],
             ),
