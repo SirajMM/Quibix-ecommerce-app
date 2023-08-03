@@ -46,12 +46,12 @@ dependencies:
   flutter_screenutil: ^5.8.4
   flutter_slidable: ^3.0.0
   provider: ^6.0.5
-  order_tracker: ^0.0.2
+  order_tracker: 
   google_sign_in: ^6.1.4
   cloud_firestore: ^4.8.2
   cached_network_image: ^3.2.3
   top_snackbar_flutter: ^3.1.0
-  flutter_colorpicker: ^1.0.3
+  # flutter_colorpicker: ^1.0.3
   palette_generator: ^0.3.3+2
   carousel_slider: ^4.2.1
   smooth_page_indicator: ^1.1.0

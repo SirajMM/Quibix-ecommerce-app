@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_store/application/wishlist/wishlist_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -41,8 +42,8 @@ class _ScreenWhishListState extends State<ScreenWhishList> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
-                  child: CircularProgressIndicator(
-                strokeWidth: 2,
+                  child: CupertinoActivityIndicator(
+                radius: 40,
               ));
             } else {
               if (ids.isEmpty) {

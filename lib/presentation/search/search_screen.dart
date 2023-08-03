@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_store/widgets/item_card.dart';
 import 'package:flutter/material.dart';
@@ -12,50 +14,64 @@ class ScreenSearch extends StatefulWidget {
   State<ScreenSearch> createState() => _ScreenSearchState();
 }
 
-List<dynamic> availableProducts = [];
-List<dynamic> filteredProducts = [];
+QuerySnapshot<Map<String, dynamic>>? _searchResults;
 
 class _ScreenSearchState extends State<ScreenSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SearchCustomAppBar(onChanged: filterUsers),
+      appBar: SearchCustomAppBar(
+        onChanged: _performSearch,
+      ),
       body: Padding(
         padding: EdgeInsets.only(left: 25.w, right: 25.w, top: 20.h),
-        child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('products').snapshots(),
-          builder: (context, snapshot) {
-            availableProducts = snapshot.data!.docs;
-            if (snapshot.hasError) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasData) {
-              return GridView.builder(
-                  itemCount: filteredProducts.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 5,
-                    crossAxisCount: 2,
-                    childAspectRatio: (.3 / .4),
-                  ),
-                  itemBuilder: (context, index) => ItemCard(
-                        allDetails: filteredProducts[index],
-                      ));
-            }
-            return const Center(child: CircularProgressIndicator());
-          },
-        ),
+        child: _buildSearchResults(),
       ),
     );
   }
 
-  void filterUsers(String query) {
+  Widget _buildSearchResults() {
+    if (_searchResults == null) {
+      return const Center(
+        child: Text(
+          'Search Products',
+          style: TextStyle(fontSize: 20),
+        ),
+      );
+    }
+
+    if (_searchResults!.docs.isEmpty) {
+      return const Center(
+        child: Text(
+          'No results found',
+          style: TextStyle(fontSize: 20),
+        ),
+      );
+    }
+    return GridView.builder(
+      itemCount: _searchResults!.docs.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        mainAxisSpacing: 5,
+        crossAxisSpacing: 5,
+        crossAxisCount: 2,
+        childAspectRatio: (.3 / .4),
+      ),
+      itemBuilder: (context, index) => ItemCard(
+        allDetails: _searchResults!.docs[index],
+      ),
+    );
+  }
+
+  void _performSearch(String query) async {
+    CollectionReference productsCollection =
+        FirebaseFirestore.instance.collection('products');
+
+    QuerySnapshot<Map<String, dynamic>> searchResults = await productsCollection
+        .where('productname', isGreaterThanOrEqualTo: query.trim())
+        .where('productname', isLessThan: query.trim() + 'z')
+        .get() as QuerySnapshot<Map<String, dynamic>>;
     setState(() {
-      filteredProducts = availableProducts.where((doc) {
-        String name = doc.data()['productname'].toLowerCase();
-        String searchLower = query.toLowerCase();
-        return name.contains(searchLower);
-      }).toList();
+      _searchResults = searchResults;
     });
   }
 }

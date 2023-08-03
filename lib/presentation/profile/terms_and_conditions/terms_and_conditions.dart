@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -16,9 +17,9 @@ class TermsAndConditions extends StatelessWidget {
               return Markdown(data: snapshot.data!);
             }
             return const Center(
-                child: CircularProgressIndicator(
-              strokeWidth: 2,
-            ));
+                  child: CupertinoActivityIndicator(
+                radius: 40,
+              ));
           },
         ),
       ),

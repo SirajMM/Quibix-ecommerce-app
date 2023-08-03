@@ -22,20 +22,6 @@ class ItemCard extends StatelessWidget {
     final wishlistProvider = Provider.of<WishListProvider>(context);
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   PageRouteBuilder(
-        //     pageBuilder: (context, animation, secondaryAnimation) =>
-        //         ScreenProductDetails(details: allDetails),
-        //     transitionsBuilder:
-        //         (context, animation, secondaryAnimation, child) {
-        //       return ScaleTransition(
-        //         scale: animation,
-        //         child: child,
-        //       );
-        //     },
-        //   ),
-        // );
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -66,8 +52,8 @@ class ItemCard extends StatelessWidget {
                             return const SizedBox(
                               height: 15,
                               width: 15,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
+                              child: Center(
+                                child: CupertinoActivityIndicator(),
                               ),
                             );
                           }

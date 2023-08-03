@@ -2,7 +2,7 @@ import 'package:e_commerce_store/model/functions/auth.dart';
 import 'package:e_commerce_store/presentation/login/login_screen.dart';
 import 'package:e_commerce_store/presentation/main_page/screen_main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class LoginOrSignIn extends StatelessWidget {
   const LoginOrSignIn({super.key});
@@ -17,8 +17,8 @@ class LoginOrSignIn extends StatelessWidget {
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
-              child: CircularProgressIndicator(
-            strokeWidth: 2,
+              child: CupertinoActivityIndicator(
+            radius: 40,
           ));
         }
         if (snapshot.hasData) {

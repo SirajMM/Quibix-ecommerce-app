@@ -185,7 +185,7 @@ class SaveAdressButten extends StatelessWidget {
     this.data,
   });
   final bool editeOrAdd;
-  final data;
+  final QueryDocumentSnapshot<Map<String, dynamic>>? data;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -221,7 +221,7 @@ class SaveAdressButten extends StatelessWidget {
                           state: stateController.text.trim(),
                           city: cityController.text.trim(),
                         ),
-                        data['id'])
+                        data!['id'])
                     .then((value) {
                     clear();
                     Navigator.pop(context);

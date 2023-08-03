@@ -7,43 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class OrdersProvider extends ChangeNotifier {
   List myFields = [];
   final User? currentUser = FirebaseAuth.instance.currentUser;
-
-  // void orderItem() async {
-  //   if (currentUser != null) {
-  //     final CollectionReference cartRef = FirebaseFirestore.instance
-  //         .collection('users')
-  //         .doc(currentUser!.email)
-  //         .collection('cartItems');
-  //     final CollectionReference orderRef =
-  //         FirebaseFirestore.instance.collection('orders');
-
-  //     try {
-  //       QuerySnapshot cartSnapshot = await cartRef.get();
-  //       List<QueryDocumentSnapshot> cartItems = cartSnapshot.docs;
-
-  //       if (cartItems.isNotEmpty) {
-  //         DocumentReference newOrderDocRef = await orderRef.add({
-  //           'orderTime': FieldValue.serverTimestamp(),
-  //           'isActive': true,
-  //           'orderStatus': 'Status.order',
-  //           'items': cartItems.map((cartItem) => cartItem.data()).toList(),
-  //         });
-  //         String orderId = newOrderDocRef.id;
-  //         await newOrderDocRef.update({'orderId': orderId});
-  //         for (var cartItem in cartItems) {
-  //           await cartItem.reference.delete();
-  //         }
-
-  //         Fluttertoast.showToast(msg: 'Order placed successfully!');
-  //       } else {
-  //         Fluttertoast.showToast(
-  //             msg: 'Cart is empty. Add items to cart first.');
-  //       }
-  //     } catch (error) {
-  //       Fluttertoast.showToast(msg: 'Failed to order item: $error');
-  //     }
-  //   }
-  // }
+  Map<String, dynamic>? data;
   void orderItemAndDeletFromCart() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     CollectionReference cartRef = firestore
@@ -113,5 +77,27 @@ class OrdersProvider extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  Future<void> getOrderData(int index) async {
+    try {
+      final CollectionReference collectionRef =
+          FirebaseFirestore.instance.collection('orders');
+      final QuerySnapshot querySnapshot = await collectionRef.get();
+      if (querySnapshot.docs.isNotEmpty && index < querySnapshot.docs.length) {
+        final DocumentSnapshot docSnapshot = querySnapshot.docs[index];
+        data = docSnapshot.data() as Map<String, dynamic>;
+      } else {
+        log("Invalid index or empty collection.");
+      }
+    } catch (e) {
+      log("Error getting order data: $e");
+    }
+  }
+
+  Stream<DocumentSnapshot> getProductData(String id) {
+    final orderRef = FirebaseFirestore.instance.collection('products');
+    final orderDoc = orderRef.doc(id);
+    return orderDoc.snapshots();
   }
 }

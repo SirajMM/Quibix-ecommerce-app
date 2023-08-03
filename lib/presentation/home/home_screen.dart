@@ -126,110 +126,128 @@ class _ScreenHome extends State<ScreenHome> with TickerProviderStateMixin {
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
-        child: NestedScrollView(
-          physics: const BouncingScrollPhysics(),
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverAppBar(
-              backgroundColor: Colors.transparent,
-              expandedHeight: respsize.height * 0.2,
-              flexibleSpace: Material(
-                borderRadius: const BorderRadius.all(Radius.circular(15)),
-                color: Colors.transparent,
-                elevation: 3,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/images/bannerimage.jpg'),
+        child: NotificationListener(
+          onNotification: (OverscrollNotification notification) {
+            if (notification.overscroll < 0 &&
+                _scrollController.offset <=
+                    (respsize.height * 0.02) - kToolbarHeight) {
+              _scrollController.jumpTo(
+                (_scrollController.offset + notification.overscroll).clamp(
+                  0.0,
+                  (respsize.height * 0.2) - kToolbarHeight,
+                ),
+              );
+              return true;
+            }
+            return false;
+          },
+          child: NestedScrollView(
+            physics: const BouncingScrollPhysics(),
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
+              SliverAppBar(
+                backgroundColor: Colors.transparent,
+                expandedHeight: respsize.height * 0.2,
+                flexibleSpace: Material(
+                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+                  color: Colors.transparent,
+                  elevation: 3,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/images/bannerimage.jpg'),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 10),
-                child: SizedBox(
-                  height: 50,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    controller: _scrollController,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _categories.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        key: _keys[index],
-                        padding: const EdgeInsets.all(6.0),
-                        child: ButtonTheme(
-                          child: AnimatedBuilder(
-                            animation: _colorTweenBackgroundOn,
-                            builder: (context, child) => Padding(
-                              padding: const EdgeInsets.only(left: 5, right: 5),
-                              child: Material(
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(18),
-                                elevation: 3,
-                                child: TextButton(
-                                  style: ButtonStyle(
-                                    minimumSize: MaterialStateProperty.all(
-                                        const Size(100, 50)),
-                                    elevation: MaterialStateProperty.all(2),
-                                    backgroundColor: MaterialStateProperty.all(
-                                        _getBackgroundColor(index)),
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      _controller.animateTo(index);
-                                      _setCurrentIndex(index);
-                                      _scrollTo(index);
-                                    });
-                                  },
-                                  child: Text(
-                                    _categories[index],
-                                    style: TextStyle(
-                                      color: _getForegroundColor(index),
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w600,
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: SizedBox(
+                    height: 50,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      controller: _scrollController,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _categories.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          key: _keys[index],
+                          padding: const EdgeInsets.all(6.0),
+                          child: ButtonTheme(
+                            child: AnimatedBuilder(
+                              animation: _colorTweenBackgroundOn,
+                              builder: (context, child) => Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 5, right: 5),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(18),
+                                  elevation: 3,
+                                  child: TextButton(
+                                    style: ButtonStyle(
+                                      minimumSize: MaterialStateProperty.all(
+                                          const Size(100, 50)),
+                                      elevation: MaterialStateProperty.all(2),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              _getBackgroundColor(index)),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _controller.animateTo(index);
+                                        _setCurrentIndex(index);
+                                        _scrollTo(index);
+                                      });
+                                    },
+                                    child: Text(
+                                      _categories[index],
+                                      style: TextStyle(
+                                        color: _getForegroundColor(index),
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-          body: TabBarView(
-            controller: _controller,
-            children: <Widget>[
-              ItemsGrid(
-                  products: FirebaseFirestore.instance
-                      .collection('products')
-                      .snapshots()),
-              ItemsGrid(
-                products: FirebaseFirestore.instance
-                    .collection('products')
-                    .where('category', isEqualTo: 'Tv')
-                    .snapshots(),
-              ),
-              ItemsGrid(
-                  products: FirebaseFirestore.instance
-                      .collection('products')
-                      .where('category', isEqualTo: 'Watch')
-                      .snapshots()),
-              ItemsGrid(
-                  products: FirebaseFirestore.instance
-                      .collection('products')
-                      .where('category', isEqualTo: 'LapTop')
-                      .snapshots()),
             ],
+            body: TabBarView(
+              controller: _controller,
+              children: <Widget>[
+                ItemsGrid(
+                    products: FirebaseFirestore.instance
+                        .collection('products')
+                        .snapshots()),
+                ItemsGrid(
+                  products: FirebaseFirestore.instance
+                      .collection('products')
+                      .where('category', isEqualTo: 'Tv')
+                      .snapshots(),
+                ),
+                ItemsGrid(
+                    products: FirebaseFirestore.instance
+                        .collection('products')
+                        .where('category', isEqualTo: 'Watch')
+                        .snapshots()),
+                ItemsGrid(
+                    products: FirebaseFirestore.instance
+                        .collection('products')
+                        .where('category', isEqualTo: 'LapTop')
+                        .snapshots()),
+              ],
+            ),
           ),
         ),
       ),

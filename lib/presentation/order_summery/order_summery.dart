@@ -51,7 +51,9 @@ class ScreenOrderSummery extends StatelessWidget {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
                                     return const Center(
-                                        child: CircularProgressIndicator());
+                                        child: CupertinoActivityIndicator(
+                                      radius: 40,
+                                    ));
                                   }
 
                                   if (snapshot.hasError) {
@@ -116,7 +118,9 @@ class ScreenOrderSummery extends StatelessWidget {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return const Center(
-                              child: CircularProgressIndicator());
+                              child: CupertinoActivityIndicator(
+                            radius: 40,
+                          ));
                         }
                         if (snapshot.hasError) {
                           return const Text('Somthing went wrong');

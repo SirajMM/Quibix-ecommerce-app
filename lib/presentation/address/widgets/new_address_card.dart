@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_store/application/address/address_provider.dart';
 import 'package:e_commerce_store/presentation/address/widgets/edite_or_add_address.dart';
 import 'package:e_commerce_store/presentation/address/functions/address_functions.dart';
@@ -9,8 +10,8 @@ import '../../../core/constants.dart';
 import '../../order_summery/widgets/custom_text.dart';
 
 class AddAddressCard extends StatelessWidget {
-  const AddAddressCard({super.key, this.data});
-  final data;
+  const AddAddressCard({super.key, required this.data});
+  final QueryDocumentSnapshot<Map<String, dynamic>> data;
   @override
   Widget build(BuildContext context) {
     return SizedBox(

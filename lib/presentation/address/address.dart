@@ -41,7 +41,10 @@ class ScreenAddAddress extends StatelessWidget {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                          child: CupertinoActivityIndicator(
+                        radius: 40,
+                      ));
                     }
                     if (snapshot.data!.docs.isEmpty) {
                       return const Center(

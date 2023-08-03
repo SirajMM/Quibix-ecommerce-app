@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_store/presentation/order_completed/order_completed.dart';
 import 'package:e_commerce_store/presentation/orders/widget/oders_custom_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -26,9 +27,7 @@ class _ScreenOrdersState extends State<ScreenOrders> {
     final orderHistoryProvider = Provider.of<OrdersProvider>(
       context,
     );
-
-    return Scaffold(
-      // backgroundColor: AppConstantsColor.scaffoldBgColor,
+    return Scaffold( 
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
@@ -63,7 +62,10 @@ class _ScreenOrdersState extends State<ScreenOrders> {
                       }
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
+                        return const Center(
+                            child: CupertinoActivityIndicator(
+                          radius: 40,
+                        ));
                       }
 
                       if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -73,8 +75,10 @@ class _ScreenOrdersState extends State<ScreenOrders> {
                       return ListView.separated(
                         shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) =>
-                            OdersCustomCard(data: snapshot.data!.docs[index]),
+                        itemBuilder: (context, index) => OdersCustomCard(
+                          data: snapshot.data!.docs[index],
+                          index: index,
+                        ),
                         separatorBuilder: (context, index) =>
                             const SizedBox(height: 10),
                         itemCount: snapshot.data!.docs.length,

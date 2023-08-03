@@ -1,6 +1,7 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../core/colors/app_color.dart';
 import '../../../core/constants.dart';
 import '../../address/address.dart';
@@ -8,7 +9,7 @@ import 'custom_text.dart';
 
 class AddressCard extends StatelessWidget {
   const AddressCard({super.key, required this.data});
-  final data;
+  final  data;
   @override
   Widget build(BuildContext context) {
     return SizedBox(

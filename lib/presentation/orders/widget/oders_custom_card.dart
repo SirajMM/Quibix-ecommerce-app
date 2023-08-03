@@ -11,13 +11,16 @@ class OdersCustomCard extends StatelessWidget {
   const OdersCustomCard({
     super.key,
     required this.data,
+    required this.index,
   });
   final QueryDocumentSnapshot<Map<String, dynamic>> data;
-
+  final int index;
   @override
   Widget build(BuildContext context) {
+    final orderProvider = Provider.of<OrdersProvider>(context);
+    orderProvider.getOrderData(index);
     return SizedBox(
-      height: 550.h,
+      height: 350.h,
       child: Card(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -57,13 +60,7 @@ class OdersCustomCard extends StatelessWidget {
                       maxLines: 2,
                     ),
                   ),
-                  constSizedBox10,
-                  Text(
-                    '1 Item',
-                    style:
-                        TextStyle(fontWeight: FontWeight.w600, fontSize: 45.sp),
-                  ),
-                  constSizedBox20,
+                  const Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -71,7 +68,7 @@ class OdersCustomCard extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                           foregroundColor: Colors.white,
-                          fixedSize: Size(270.w, 10.h),
+                          fixedSize: Size(270.w, 5.h),
                           elevation: 2,
                         ),
                         onPressed: () {
@@ -89,15 +86,17 @@ class OdersCustomCard extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppConstantsColor.materialThemeColor,
                           foregroundColor: Colors.white,
-                          fixedSize: Size(270.w, 10.h),
+                          fixedSize: Size(270.w, 5.h),
                           elevation: 2,
                         ),
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  ScreenTrackOrder(data: data),
+                              builder: (context) => ScreenTrackOrder(
+                                data: data,
+                                index: index,
+                              ),
                             ),
                           );
                         },
@@ -105,9 +104,12 @@ class OdersCustomCard extends StatelessWidget {
                           'Track',
                           style: TextStyle(fontWeight: FontWeight.w700),
                         ),
-                      )
+                      ),
                     ],
-                  )
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
                 ],
               ),
             ],

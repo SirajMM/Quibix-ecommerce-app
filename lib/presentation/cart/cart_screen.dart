@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_store/application/cart/cart_provider.dart';
 import 'package:e_commerce_store/core/colors/app_color.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +47,9 @@ class _ScreenCartState extends State<ScreenCart> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return const Center(
-                                child: CircularProgressIndicator());
+                                child: CupertinoActivityIndicator(
+                              radius: 40,
+                            ));
                           }
                           if (snapshot.hasError) {
                             return const Text('Somthing went wrong');

@@ -17,7 +17,7 @@ class ScreenMain extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    indexChangeNotifier.value = 0;
+    // indexChangeNotifier.value = 0;
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: ValueListenableBuilder(

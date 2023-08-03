@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'item_card.dart';
 
 class ItemsGrid extends StatelessWidget {
@@ -16,10 +16,9 @@ class ItemsGrid extends StatelessWidget {
           
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-              ),
-            );
+                  child: CupertinoActivityIndicator(
+                radius: 40,
+              ));
           }
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');

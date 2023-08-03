@@ -47,7 +47,11 @@ Future<dynamic> successShowdialog(BuildContext context, bool successOrFail) {
             },
             child: Text(
               successOrFail ? 'Go Home' : 'Retry',
-              style: const TextStyle(fontSize: 15),
+              style: TextStyle(
+                  fontSize: 15,
+                  color: successOrFail
+                      ? AppConstantsColor.lightTextColor
+                      : Colors.black),
             ),
           ),
           constSizedBox10,

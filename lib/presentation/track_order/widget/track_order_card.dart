@@ -7,9 +7,11 @@ import '../../../core/constants.dart';
 class TrackOrderCard extends StatelessWidget {
   const TrackOrderCard({
     super.key,
-    required this.data,
+    this.data,
+    required this.orderData,
   });
-  final QueryDocumentSnapshot<Map<String, dynamic>> data;
+  final QueryDocumentSnapshot<Map<String, dynamic>>? data;
+  final Map<String, dynamic>? orderData;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -34,7 +36,7 @@ class TrackOrderCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.contain,
-                    image: NetworkImage(data['imageList'][0]),
+                    image: NetworkImage(data!['imageList'][0]),
                   ),
                 ),
               ),
@@ -46,7 +48,7 @@ class TrackOrderCard extends StatelessWidget {
                   SizedBox(
                     width: 640.w,
                     child: Text(
-                      data['productname'],
+                      data!['productname'] ?? '',
                       style: TextStyle(
                           fontWeight: FontWeight.w600, fontSize: 45.sp),
                       overflow: TextOverflow.ellipsis,
@@ -55,7 +57,7 @@ class TrackOrderCard extends StatelessWidget {
                   ),
                   constSizedBox10,
                   Text(
-                    '1 Item',
+                    '${orderData!.isNotEmpty ? orderData!['count'] : 1} Item',
                     style:
                         TextStyle(fontWeight: FontWeight.w600, fontSize: 55.sp),
                   ),
@@ -65,7 +67,7 @@ class TrackOrderCard extends StatelessWidget {
                     children: [
                       PriceWidget(
                         fontSize: 25,
-                        price: data['price'],
+                        price: data!['price'] ?? '',
                       ),
                       SizedBox(
                         width: 60.w,
