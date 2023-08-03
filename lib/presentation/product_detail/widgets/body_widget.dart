@@ -46,7 +46,9 @@ class Body extends StatelessWidget {
                   details['imageList'].length < 2
                       ? const SizedBox()
                       : SlideIndicator(details: details),
-                  ColorDot(isSelected: true, fillColor: details['color']),
+                  details['color'].length != 0
+                      ? ColorDot(fillColor: details['color'])
+                      : const SizedBox(),
                   Text(
                     details['productname'],
                     style: const TextStyle(
@@ -73,5 +75,3 @@ class Body extends StatelessWidget {
     );
   }
 }
-
-

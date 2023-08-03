@@ -1,14 +1,15 @@
+import 'package:e_commerce_store/application/product_details/product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class ColorDot extends StatelessWidget {
   const ColorDot({
     super.key,
     this.fillColor,
-    this.isSelected = false,
   });
   final List? fillColor;
-  final bool isSelected;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -18,33 +19,38 @@ class ColorDot extends StatelessWidget {
         children: [
           SizedBox(
             height: 65.h,
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: fillColor!.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  padding: const EdgeInsets.all(2),
-                  height: 65.h,
-                  width: 65.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                        color: isSelected
-                            ? const Color(0xFF707070)
-                            : Colors.transparent),
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: fillColor!.isEmpty
-                          ? Colors.transparent
-                          : Color(int.parse(fillColor![index])),
+            child: Consumer<ProductDetailProvider>(
+              builder: (context, value, child) => ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: fillColor!.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () => value.selectColor(fillColor![index]),
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.all(2),
+                      height: 70.h,
+                      width: 70.w,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: fillColor![index] == value.isSelected
+                                ? const Color(0xFF707070)
+                                : Colors.transparent),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: fillColor!.isEmpty
+                              ? Colors.transparent
+                              : Color(int.parse(fillColor![index])),
+                        ),
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           )
         ],

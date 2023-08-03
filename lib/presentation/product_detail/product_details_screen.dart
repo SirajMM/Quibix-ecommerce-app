@@ -5,7 +5,6 @@ import 'package:e_commerce_store/model/wishlist_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../application/product_details/product_details.dart';
 import 'widgets/body_widget.dart';
 
 class ScreenProductDetails extends StatelessWidget {
@@ -13,8 +12,8 @@ class ScreenProductDetails extends StatelessWidget {
   final DocumentSnapshot details;
   @override
   Widget build(BuildContext context) {
-    Provider.of<ProductDetailProvider>(context, listen: false)
-        .retrieveDominantColor(details['imageList'][0]);
+    // Provider.of<ProductDetailProvider>(context, listen: false)
+    //     .retrieveDominantColor(details['imageList'][0]);
     return Scaffold(
       backgroundColor: AppConstantsColor.materialThemeColor,
       appBar: AppBar(
