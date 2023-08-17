@@ -4,6 +4,7 @@ import 'package:e_commerce_store/core/colors/app_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'widget/cart_listview.dart';
 import 'widget/checkout_widget.dart';
@@ -48,7 +49,7 @@ class _ScreenCartState extends State<ScreenCart> {
                               ConnectionState.waiting) {
                             return const Center(
                                 child: CupertinoActivityIndicator(
-                              radius: 40,
+                              radius: 20,
                             ));
                           }
                           if (snapshot.hasError) {
@@ -58,10 +59,17 @@ class _ScreenCartState extends State<ScreenCart> {
                             snapshot: snapshot,
                           );
                         })
-                    : const Center(
-                        child: Text(
-                        'Cart is empty!',
-                        style: TextStyle(fontSize: 20),
+                    : Center(
+                        child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Lottie.asset('assets/cart.json', height: 800.h),
+                          const Text(
+                            'Cart is empty!',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ],
                       )),
               ),
             ),

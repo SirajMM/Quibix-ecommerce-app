@@ -10,10 +10,16 @@ class OrdersProvider extends ChangeNotifier {
   Map<String, dynamic>? data;
   void orderItemAndDeletFromCart() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    CollectionReference cartRef = firestore
-        .collection('users')
+    CollectionReference userRef = firestore.collection('users');
+    CollectionReference cartRef =
+        userRef.doc(currentUser!.email).collection('cartItems');
+    Query<Map<String, dynamic>> addressDoc = userRef
         .doc(currentUser!.email)
-        .collection('cartItems');
+        .collection('address')
+        .where('isDefaultAddress', isEqualTo: true);
+    QuerySnapshot<Map<String, dynamic>> addressData = await addressDoc.get();
+    String addressId = addressData.docs.first.id;
+
     CollectionReference orederRef = firestore.collection('orders');
     QuerySnapshot cartSnapshot = await cartRef.get();
     List<QueryDocumentSnapshot> cartDoc = cartSnapshot.docs;
@@ -22,9 +28,11 @@ class OrdersProvider extends ChangeNotifier {
       Map<String, dynamic> cartItemData = doc.data() as Map<String, dynamic>;
       DocumentReference orderDocRef = orederRef.doc();
       cartItemData['orderDate'] = Timestamp.now();
-      cartItemData['status'] = 'Pending';
+      cartItemData['status'] = 'Placed';
       cartItemData['isActive'] = true;
       cartItemData['orderid'] = orderDocRef.id;
+      cartItemData['addressId'] = addressId;
+      cartItemData['userEmail'] = currentUser!.email;
       batch.set(orderDocRef, cartItemData);
       batch.delete(doc.reference);
     }
@@ -72,8 +80,10 @@ class OrdersProvider extends ChangeNotifier {
     final querySnapshot = await collectionRef.get();
     myFields.clear();
     for (var document in querySnapshot.docs) {
-      final item = document.data()['cartList'];
-      myFields.add(item);
+      if (document.data()['isActive'] == true) {
+        final item = document.data()['cartList'];
+        myFields.add(item);
+      }
     }
 
     notifyListeners();

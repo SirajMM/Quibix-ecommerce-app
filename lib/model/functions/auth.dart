@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +36,12 @@ class Auth {
   }
 
   Future<void> signOut1() async {
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+    if (await _googleSignIn.isSignedIn()) {
+      await GoogleSignIn().signOut();
+    }
     await _firebaseAuth.signOut();
-    await GoogleSignIn().signOut();
-   
   }
 
   Future<void> signInWithGoogle() async {
@@ -51,4 +56,6 @@ class Auth {
         await FirebaseAuth.instance.signInWithCredential(credential);
     log('User signed in with Google: ${userCredential.user?.displayName}');
   }
+
+
 }

@@ -7,7 +7,7 @@ class AppConstantsColor {
   static const Color lightTextColor = Colors.white;
   static const Color unSelectedTextColor = Color(0xffc9c9c9);
   static const Color materialButtonColor = Color(0xfffa2f65);
-  static const Color materialThemeColor = Color(0xff138086);
-  static const Color materialThemeColor2 = Color(0xff514766);
+  static const Color materialThemeColor = Color(0xFF138086);
+  static const Color materialThemeColor2 = Color.fromRGBO(81, 71, 102, 1);
   static Color scaffoldBgColor = Colors.grey.withOpacity(.1);
 }

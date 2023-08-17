@@ -61,7 +61,25 @@ class TrackOrderCard extends StatelessWidget {
                     style:
                         TextStyle(fontWeight: FontWeight.w600, fontSize: 55.sp),
                   ),
-                  constSizedBox20,
+                  Row(
+                    children: [
+                      const Text(
+                        'Color: ',
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      orderData!['color'] != null
+                          ? Container(
+                              height: 40.h,
+                              width: 40.w,
+                              decoration: BoxDecoration(
+                                color: Color(int.parse(orderData!['color']!)),
+                                shape: BoxShape.circle,
+                              ),
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
+                  // constSizedBox20,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [

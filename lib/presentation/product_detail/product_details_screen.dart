@@ -19,6 +19,7 @@ class ScreenProductDetails extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppConstantsColor.lightTextColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(CupertinoIcons.back),

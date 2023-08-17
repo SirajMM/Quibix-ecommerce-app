@@ -1,10 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce_store/application/home/home_provider.dart';
 import 'package:e_commerce_store/core/colors/app_color.dart';
 import 'package:e_commerce_store/presentation/search/search_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import '../../widgets/items_gride.dart';
 import '../profile/profile.dart';
 
@@ -71,6 +73,7 @@ class _ScreenHome extends State<ScreenHome> with TickerProviderStateMixin {
     _colorTweenForegroundOn = _animationControllerOn
         .drive(ColorTween(begin: _foregroundOff, end: _foregroundOn));
     super.initState();
+    context.read<HomeProvider>().getProfileImage();
   }
 
   @override
@@ -116,10 +119,11 @@ class _ScreenHome extends State<ScreenHome> with TickerProviderStateMixin {
                 builder: (context) => const ScreenProfile(),
               ),
             ),
-            icon: CircleAvatar(
-              radius: 17,
-              backgroundImage: NetworkImage(
-                  FirebaseAuth.instance.currentUser!.photoURL ?? ''),
+            icon: Consumer<HomeProvider>(
+              builder: (context, value, child) => CircleAvatar(
+                  radius: 47.r,
+                  backgroundImage:
+                      context.watch<HomeProvider>().profileImage()),
             ),
           )
         ],
@@ -170,9 +174,9 @@ class _ScreenHome extends State<ScreenHome> with TickerProviderStateMixin {
                     child: ListView.builder(
                       shrinkWrap: true,
                       physics: const BouncingScrollPhysics(),
-                      controller: _scrollController,
                       scrollDirection: Axis.horizontal,
                       itemCount: _categories.length,
+                      controller: _scrollController,
                       itemBuilder: (context, index) {
                         return Padding(
                           key: _keys[index],

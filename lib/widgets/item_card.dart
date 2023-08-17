@@ -29,91 +29,82 @@ class ItemCard extends StatelessWidget {
             ));
       },
       child: Card(
-          surfaceTintColor: Colors.transparent,
-          color: AppConstantsColor.lightTextColor,
-          elevation: 5,
-          semanticContainer: true,
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    PriceWidget(fontSize: 22, price: allDetails['price']),
-                    FutureBuilder(
-                        future:
-                            wishlistProvider.existInWishlist(allDetails['id']),
-                        builder: (context, snapshot) {
-                          final bool itemExists = snapshot.data ?? false;
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const SizedBox(
-                              height: 15,
-                              width: 15,
-                              child: Center(
-                                child: CupertinoActivityIndicator(),
-                              ),
-                            );
-                          }
-                          return GestureDetector(
-                              onTap: () {
-                                wishlistProvider.addToWishlist(
-                                    WishListModel(id: allDetails['id']));
-                              },
-                              child: Icon(
-                                !itemExists
-                                    ? CupertinoIcons.heart
-                                    : CupertinoIcons.heart_solid,
-                                size: 28,
-                                color: !itemExists ? null : Colors.red,
-                              ));
-                        })
-                  ],
-                ),
-                Hero(
-                  tag: allDetails['id'],
-                  child: CachedNetworkImage(
-                    height: 110,
-                    width: 120,
-                    filterQuality: FilterQuality.high,
-                    fit: BoxFit.contain,
-                    imageUrl: allDetails['imageList'][0],
-                    placeholder: (context, url) => Center(
-                      child: Image.asset('assets/images/loadinganimation.gif'),
-                    ),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+        surfaceTintColor: Colors.transparent,
+        color: AppConstantsColor.lightTextColor,
+        elevation: 5,
+        semanticContainer: true,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  PriceWidget(fontSize: 24, price: allDetails['price']),
+                  FutureBuilder<bool>(
+                    future: wishlistProvider.existInWishlist(allDetails['id']),
+                    builder: (context, snapshot) {
+                      final bool itemExists = snapshot.data ?? false;
+                      return InkWell(
+                        onTap: () {
+                          wishlistProvider.addToWishlist(
+                              WishListModel(id: allDetails['id']));
+                        },
+                        child: Icon(
+                          !itemExists
+                              ? CupertinoIcons.heart
+                              : CupertinoIcons.heart_solid,
+                          size: 29,
+                          color: !itemExists ? null : Colors.red,
+                        ),
+                      );
+                    },
+                  )
+                ],
+              ),
+              Hero(
+                tag: allDetails['id'],
+                child: CachedNetworkImage(
+                  height: 110,
+                  width: 120,
+                  filterQuality: FilterQuality.high,
+                  fit: BoxFit.contain,
+                  imageUrl: allDetails['imageList'][0],
+                  placeholder: (context, url) => Center(
+                    child: Image.asset('assets/images/loadinganimation.gif'),
                   ),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
-                constSizedBox10,
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            allDetails['productname'],
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: const TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            allDetails['subname'],
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                        ],
-                      ),
+              ),
+              constSizedBox10,
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          allDetails['productname'],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: const TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          allDetails['subname'],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ],
                     ),
-                  ],
-                )
-              ],
-            ),
-          )),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

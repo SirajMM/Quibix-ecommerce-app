@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/items_gride.dart';
 
@@ -47,10 +48,20 @@ class _ScreenWhishListState extends State<ScreenWhishList> {
               ));
             } else {
               if (ids.isEmpty) {
-                return const Center(
-                  child: Text(
-                    'Your Wishlist is Empty!',
-                    style: TextStyle(fontSize: 20),
+                return Container(
+                  alignment: Alignment.bottomCenter,
+                  height: double.infinity,
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset('assets/wishlist.json', height: 400.h),
+                      const Text(
+                        'Your Wishlist is Empty!',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ],
                   ),
                 );
               }

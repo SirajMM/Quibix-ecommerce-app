@@ -29,18 +29,12 @@ class _ProductImageState extends State<ProductImage> {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Consumer<ProductDetailProvider>(builder: (context, value, child) {
-            Provider.of<ProductDetailProvider>(context, listen: true)
-                .retrieveDominantColor(widget.details['imageList'][0]);
-            return Container(
-              height: 700.h,
-              width: 700.w,
-              decoration: BoxDecoration(
-                  color: value.dominantColor?.withOpacity(.2) ??
-                      Colors.grey.withOpacity(.2),
-                  shape: BoxShape.circle),
-            );
-          }),
+          Container(
+            height: 700.h,
+            width: 700.w,
+            decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(.2), shape: BoxShape.circle),
+          ),
           Consumer<ProductDetailProvider>(builder: (context, value, child) {
             return CarouselSlider.builder(
               itemCount: widget.details['imageList'].length,
@@ -54,9 +48,7 @@ class _ProductImageState extends State<ProductImage> {
                     filterQuality: FilterQuality.high,
                     placeholder: (context, url) => const Center(
                       child: Center(
-                        child: CupertinoActivityIndicator(
-                          radius: 40,
-                        ),
+                        child: CupertinoActivityIndicator(),
                       ),
                     ),
                     errorWidget: (context, url, error) =>

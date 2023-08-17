@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_store/application/cart/cart_provider.dart';
 import 'package:e_commerce_store/presentation/product_detail/product_details_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../../core/colors/app_color.dart';
 import '../../../widgets/price_widget.dart';
 import 'item_count.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
-class CartItemCard extends StatelessWidget {
+class CartItemCard extends StatefulWidget {
   const CartItemCard({
     super.key,
     required this.data,
@@ -16,14 +18,20 @@ class CartItemCard extends StatelessWidget {
   });
   final int index;
   final DocumentSnapshot data;
+
+  @override
+  State<CartItemCard> createState() => _CartItemCardState();
+}
+
+class _CartItemCardState extends State<CartItemCard> {
   @override
   Widget build(BuildContext context) {
-    int price = int.parse(data['price']);
+    int price = int.parse(widget.data['price']);
     return GestureDetector(
       onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ScreenProductDetails(details: data),
+            builder: (context) => ScreenProductDetails(details: widget.data),
           )),
       child: Material(
         elevation: 3,
@@ -47,13 +55,40 @@ class CartItemCard extends StatelessWidget {
                       child: SizedBox(
                         width: 700.w,
                         child: Text(
-                          data['productname'],
+                          widget.data['productname'],
                           style: TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 55.sp),
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
                         ),
                       ),
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          'Color: ',
+                          style: TextStyle(fontSize: 17),
+                        ),
+                        FutureBuilder(
+                          future: Provider.of<CartProvider>(context)
+                              .getCartDetails(widget.data['id']),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return const Text('Default color');
+                            }
+                            if (snapshot.data != null) {
+                              return Container(
+                                height: 40.h,
+                                width: 40.w,
+                                decoration: BoxDecoration(
+                                  color: Color(int.parse(snapshot.data ?? '')),
+                                  shape: BoxShape.circle,
+                                ),
+                              );
+                            }
+                            return const Text('Default color');
+                          },
+                        )
+                      ],
                     ),
                     Row(
                       children: [
@@ -66,8 +101,8 @@ class CartItemCard extends StatelessWidget {
                               color: AppConstantsColor.materialThemeColor),
                           child: Consumer<CartProvider>(
                               builder: (context, value, child) => ItemCount(
-                                    id: data['id'],
-                                    index: index,
+                                    id: widget.data['id'],
+                                    index: widget.index,
                                   )),
                         ),
                         SizedBox(
@@ -76,23 +111,25 @@ class CartItemCard extends StatelessWidget {
                         Consumer<CartProvider>(
                           builder: (context, value, child) => PriceWidget(
                             fontSize: 24,
-                            price: '${value.itemCounts[index] * price}',
+                            price: '${value.itemCounts[widget.index] * price}',
                           ),
-                        )
+                        ),
                       ],
                     )
                   ],
                 ),
                 const Spacer(),
-                Container(
-                  height: 250.h,
-                  width: 250.w,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
+                SizedBox(
+                  child: CachedNetworkImage(
+                      height: 250.h,
+                      width: 250.w,
+                      placeholder: (context, url) =>
+                          const CupertinoActivityIndicator(),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                       fit: BoxFit.contain,
-                      image: NetworkImage(data['imageList'][0]),
-                    ),
-                  ),
+                      filterQuality: FilterQuality.high,
+                      imageUrl: widget.data['imageList'][0]),
                 )
               ],
             ),

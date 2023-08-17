@@ -12,6 +12,7 @@ class ColorDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<ProductDetailProvider>().isSelected = fillColor![0];
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(

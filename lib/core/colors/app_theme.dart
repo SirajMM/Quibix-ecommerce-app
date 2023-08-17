@@ -59,7 +59,6 @@ class AppThemes {
   static TextStyle detailsProductDescriptions =
       TextStyle(color: Colors.grey[600]);
 
-  /// Bag
 
   static const TextStyle bagEmptyListTitle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.w500);

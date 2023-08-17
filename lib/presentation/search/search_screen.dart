@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_store/widgets/item_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 
 import 'widgets/search_app_bar.dart';
 
@@ -41,10 +42,16 @@ class _ScreenSearchState extends State<ScreenSearch> {
     }
 
     if (_searchResults!.docs.isEmpty) {
-      return const Center(
-        child: Text(
-          'No results found',
-          style: TextStyle(fontSize: 20),
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Lottie.asset('assets/animation_search.json', height: 600.h),
+            const Text(
+              'No results found',
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
         ),
       );
     }
@@ -67,8 +74,8 @@ class _ScreenSearchState extends State<ScreenSearch> {
         FirebaseFirestore.instance.collection('products');
 
     QuerySnapshot<Map<String, dynamic>> searchResults = await productsCollection
-        .where('productname', isGreaterThanOrEqualTo: query.trim())
-        .where('productname', isLessThan: query.trim() + 'z')
+        .where('searchField', isGreaterThanOrEqualTo: query.toLowerCase())
+        .where('searchField', isLessThan: query + 'z')
         .get() as QuerySnapshot<Map<String, dynamic>>;
     setState(() {
       _searchResults = searchResults;

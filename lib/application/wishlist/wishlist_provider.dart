@@ -8,7 +8,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class WishListProvider extends ChangeNotifier {
   List<dynamic> existingProducts = [];
-  // bool there = false;
 
   Future<bool> existInWishlist(String id) async {
     final User? currentUser = FirebaseAuth.instance.currentUser;
@@ -18,7 +17,7 @@ class WishListProvider extends ChangeNotifier {
       final DocumentReference userDoc = userCollection.doc(currentUser.email);
 
       final DocumentSnapshot userSnapshot = await userDoc.get();
-      if (userSnapshot.exists||userSnapshot!=null) {
+      if (userSnapshot.exists || userSnapshot != null) {
         existingProducts = List.from(userSnapshot.get('products'));
       }
 
@@ -65,14 +64,7 @@ class WishListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  retreveWishListItem() async {
-    final user = FirebaseAuth.instance.currentUser!.email;
-    final CollectionReference userCollection =
-        FirebaseFirestore.instance.collection('users');
-    final userDoc = await userCollection.doc(user).get();
-
-    return userDoc.get('products');
-  }
+ 
 
   Future<List<String>> getdocIds(List<String> ids, wishlistRefe) async {
     ids.clear();

@@ -27,11 +27,24 @@ class ScreenProfile extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              const Stack(
+              Stack(
                 alignment: AlignmentDirectional.topCenter,
                 children: [
-                  BagroundDesign(),
-                  ProfieCircleAvathar(),
+                  const BagroundDesign(),
+                  const ProfieCircleAvathar(),
+                  Positioned(
+                    left: 0,
+                    child: IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.arrow_back_ios_new)),
+                  ),
+                  Positioned(
+                    right: 0,
+                    child: IconButton(
+                        onPressed: () =>
+                            ProfileFunctions().exitdialogBuilder(context),
+                        icon: const Icon(Icons.logout_outlined)),
+                  )
                 ],
               ),
               Text(
@@ -85,7 +98,7 @@ class ScreenProfile extends StatelessWidget {
                         constSizedBox10,
                         ProfileSettingsTile(
                           icons: CupertinoIcons.heart,
-                          text: 'Whishlist',
+                          text: 'Wishlist',
                           onTap: () {
                             Navigator.push(
                                 context,

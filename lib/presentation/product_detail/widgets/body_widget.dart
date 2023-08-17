@@ -17,61 +17,66 @@ class Body extends StatelessWidget {
   final DocumentSnapshot details;
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Material(
-            color: Colors.transparent,
-            elevation: 7,
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(50),
-              bottomRight: Radius.circular(50),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Material(
+          color: Colors.transparent,
+          elevation: 7,
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(50),
+            bottomRight: Radius.circular(50),
+          ),
+          child: Container(
+            height: 1700.h,
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            decoration: const BoxDecoration(
+              color: AppConstantsColor.lightTextColor,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(50),
+                bottomRight: Radius.circular(50),
+              ),
             ),
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              decoration: const BoxDecoration(
-                color: AppConstantsColor.lightTextColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(50),
-                  bottomRight: Radius.circular(50),
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 10.h),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ProductImage(details: details),
+                    details['imageList'].length < 2
+                        ? const SizedBox()
+                        : SlideIndicator(details: details),
+                    details['color'].length != 0
+                        ? ColorDot(fillColor: details['color'])
+                        : const SizedBox(),
+                    Text(
+                      details['productname'],
+                      style: const TextStyle(
+                          fontSize: 23, fontWeight: FontWeight.bold),
+                    ),
+                    constSizedBox10,
+                    PriceWidget(fontSize: 25, price: details['price']),
+                    constSizedBox10,
+                    Text(
+                      details['description'],
+                      overflow: TextOverflow.fade,
+                      style: const TextStyle(fontSize: 17),
+                    ),
+                  ],
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ProductImage(details: details),
-                  details['imageList'].length < 2
-                      ? const SizedBox()
-                      : SlideIndicator(details: details),
-                  details['color'].length != 0
-                      ? ColorDot(fillColor: details['color'])
-                      : const SizedBox(),
-                  Text(
-                    details['productname'],
-                    style: const TextStyle(
-                        fontSize: 23, fontWeight: FontWeight.bold),
-                  ),
-                  constSizedBox10,
-                  PriceWidget(fontSize: 25, price: details['price']),
-                  constSizedBox10,
-                  Text(
-                    details['description'],
-                    style: const TextStyle(fontSize: 15),
-                  ),
-                  constSizedBox10,
-                ],
-              ),
             ),
           ),
-          SizedBox(
-            height: 200.h,
-          ),
-          CartButton(product: details),
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 150.h,
+        ),
+        CartButton(product: details),
+      ],
     );
   }
 }

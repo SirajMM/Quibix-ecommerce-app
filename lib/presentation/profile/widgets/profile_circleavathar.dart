@@ -1,7 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:e_commerce_store/application/home/home_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/colors/app_color.dart';
 
@@ -23,11 +24,17 @@ class ProfieCircleAvathar extends StatelessWidget {
               color: Colors.black,
               shape: BoxShape.circle,
               elevation: 3,
-              child: CircleAvatar(
-                backgroundImage: userImage.isEmpty || userImage == ''
-                    ? const AssetImage('assets/images/defaultDp.jpg')
-                    : NetworkImage(userImage) as ImageProvider,
-                radius: 250.r,
+              child: Consumer<HomeProvider>(
+                builder: (context, value, child) => value.picking != true
+                    ? CircleAvatar(
+                        backgroundColor: Colors.grey[300],
+                        backgroundImage: value.profileImage(),
+                        radius: 250.r,
+                      )
+                    : CircleAvatar(
+                        backgroundColor: Colors.grey[300],
+                        radius: 250.r,
+                        child: const CupertinoActivityIndicator()),
               ),
             ),
           ),
@@ -35,7 +42,9 @@ class ProfieCircleAvathar extends StatelessWidget {
             top: 570.h,
             left: 590.w,
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                context.read<HomeProvider>().pickImage();
+              },
               icon: const CircleAvatar(
                 backgroundColor: AppConstantsColor.materialThemeColor,
                 child: Icon(
@@ -50,5 +59,3 @@ class ProfieCircleAvathar extends StatelessWidget {
     );
   }
 }
-
-final String userImage = FirebaseAuth.instance.currentUser!.photoURL ?? '';

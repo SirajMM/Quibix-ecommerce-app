@@ -137,7 +137,7 @@ class CartProvider extends ChangeNotifier {
     return 0;
   }
 
-  onItemCountIncrement(index, id) async {
+  void onItemCountIncrement(index, id) async {
     final CollectionReference cartRef = FirebaseFirestore.instance
         .collection('users')
         .doc(currentUser!.email)
@@ -151,7 +151,17 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  onItemCountDecrement(index, id) async {
+  Future<String> getCartDetails(String id) async {
+    final cartRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser!.email)
+        .collection('cartItems');
+    final cartDoc = cartRef.doc(id);
+    final cartData = await cartDoc.get();
+    return cartData.data()!['color'];
+  }
+
+  void onItemCountDecrement(index, id) async {
     final CollectionReference cartRef = FirebaseFirestore.instance
         .collection('users')
         .doc(currentUser!.email)
