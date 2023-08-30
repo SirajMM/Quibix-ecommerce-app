@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import '../../widgets/items_gride.dart';
+import '../widgets/items_gride.dart';
 
 class ScreenWhishList extends StatefulWidget {
   const ScreenWhishList({Key? key}) : super(key: key);

@@ -1,4 +1,4 @@
-import 'package:e_commerce_store/model/functions/auth.dart';
+import 'package:e_commerce_store/infrastructure/authentication/auth.dart';
 import 'package:e_commerce_store/presentation/login/login_screen.dart';
 import 'package:e_commerce_store/presentation/main_page/screen_main.dart';
 import 'package:firebase_auth/firebase_auth.dart';

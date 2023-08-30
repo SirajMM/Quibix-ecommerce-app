@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../core/colors/app_color.dart';
+import '../../core/colors/app_color.dart';
 
 class SwitchSingInAndSignUp extends StatelessWidget {
   const SwitchSingInAndSignUp({

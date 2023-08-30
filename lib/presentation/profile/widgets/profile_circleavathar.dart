@@ -1,4 +1,5 @@
 import 'package:e_commerce_store/application/home/home_provider.dart';
+import 'package:e_commerce_store/presentation/profile/widgets/image_full_screen_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,10 +27,21 @@ class ProfieCircleAvathar extends StatelessWidget {
               elevation: 3,
               child: Consumer<HomeProvider>(
                 builder: (context, value, child) => value.picking != true
-                    ? CircleAvatar(
-                        backgroundColor: Colors.grey[300],
-                        backgroundImage: value.profileImage(),
-                        radius: 250.r,
+                    ? GestureDetector(
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  FullScreenWidget(image: value.downloadUrl!),
+                            )),
+                        child: Hero(
+                          tag: 'proImage',
+                          child: CircleAvatar(
+                            backgroundColor: Colors.grey[300],
+                            backgroundImage: value.profileImage(),
+                            radius: 250.r,
+                          ),
+                        ),
                       )
                     : CircleAvatar(
                         backgroundColor: Colors.grey[300],

@@ -1,14 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_typing_uninitialized_variables
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_store/core/constants.dart';
-import 'package:e_commerce_store/model/wishlist_model.dart';
+import 'package:e_commerce_store/domain/wishlist/model/wishlist_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:e_commerce_store/core/colors/app_color.dart';
-import 'package:e_commerce_store/widgets/price_widget.dart';
-import '../application/wishlist/wishlist_provider.dart';
-import '../presentation/product_detail/product_details_screen.dart';
+import 'package:e_commerce_store/presentation/widgets/price_widget.dart';
+import '../../application/wishlist/wishlist_provider.dart';
+import '../product_detail/product_details_screen.dart';
 
 class ItemCard extends StatelessWidget {
   const ItemCard({

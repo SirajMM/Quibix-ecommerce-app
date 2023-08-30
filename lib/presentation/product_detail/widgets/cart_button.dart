@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_store/application/cart/cart_provider.dart';
 import 'package:e_commerce_store/application/product_details/product_details.dart';
-import 'package:e_commerce_store/model/cart_model.dart';
+import 'package:e_commerce_store/domain/cart/model/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';

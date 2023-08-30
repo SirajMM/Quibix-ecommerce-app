@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/colors/app_color.dart';
 import '../../../core/constants.dart';
-import '../../../model/address_model.dart';
+import '../../../domain/address/model/address_model.dart';
 import '../../../application/address/address_provider.dart';
 
 class EditOrAddAddress extends StatelessWidget {

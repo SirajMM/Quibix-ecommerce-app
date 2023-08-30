@@ -3,6 +3,7 @@ import 'package:e_commerce_store/application/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+
 class CartFunctions {
   static Future<void> dialogBuilder(BuildContext context, id) {
     return showDialog<void>(

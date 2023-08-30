@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:developer';
-import 'package:e_commerce_store/model/functions/auth.dart';
+import 'package:e_commerce_store/infrastructure/authentication/auth.dart';
 import 'package:e_commerce_store/presentation/login/reset_password/reset_screen.dart';
-import 'package:e_commerce_store/widgets/navigate_signin_and_signup.dart';
+import 'package:e_commerce_store/presentation/widgets/navigate_signin_and_signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +51,8 @@ class _ScreenSignUpState extends State<ScreenSignUp> {
             child: Padding(
               padding: const EdgeInsets.only(left: 30, right: 30),
               child: ListView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 shrinkWrap: true,
                 children: <Widget>[
                   SizedBox(

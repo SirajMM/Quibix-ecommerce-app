@@ -2,16 +2,16 @@
 import 'package:e_commerce_store/application/login/login_provider.dart';
 import 'package:e_commerce_store/core/colors/app_color.dart';
 import 'package:e_commerce_store/core/constants.dart';
-import 'package:e_commerce_store/model/functions/auth.dart';
+import 'package:e_commerce_store/infrastructure/authentication/auth.dart';
 import 'package:e_commerce_store/presentation/SignUp/sign_up_screen.dart';
 import 'package:e_commerce_store/presentation/login/widgets/log_in_elevated_button.dart';
 import 'package:e_commerce_store/presentation/login/widgets/text_field.dart';
-import 'package:e_commerce_store/widgets/login_or_home/login_or_home.dart';
+import 'package:e_commerce_store/presentation/widgets/login_or_home/login_or_home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../widgets/navigate_signin_and_signup.dart';
+import '../widgets/navigate_signin_and_signup.dart';
 import 'reset_password/reset_screen.dart';
 
 class ScreenLogin extends StatefulWidget {
@@ -46,6 +46,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
             child: Padding(
               padding: const EdgeInsets.only(left: 30, right: 30),
               child: ListView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 shrinkWrap: true,
                 children: <Widget>[
                   SizedBox(

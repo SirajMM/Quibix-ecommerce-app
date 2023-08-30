@@ -3,7 +3,7 @@ import 'package:e_commerce_store/core/colors/app_color.dart';
 import 'package:e_commerce_store/core/constants.dart';
 import 'package:e_commerce_store/presentation/product_detail/widgets/cart_button.dart';
 import 'package:e_commerce_store/presentation/product_detail/widgets/slide_indicator.dart';
-import 'package:e_commerce_store/widgets/price_widget.dart';
+import 'package:e_commerce_store/presentation/widgets/price_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'color_dot.dart';

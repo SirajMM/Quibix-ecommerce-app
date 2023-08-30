@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../../../core/colors/app_color.dart';
-import '../../../widgets/price_widget.dart';
+import '../../widgets/price_widget.dart';
 import '../../order_summery/order_summery.dart';
 
 class CheckoutWidget extends StatelessWidget {

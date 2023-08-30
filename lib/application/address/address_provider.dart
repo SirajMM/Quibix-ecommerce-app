@@ -2,7 +2,7 @@
 
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce_store/model/address_model.dart';
+import 'package:e_commerce_store/domain/address/model/address_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

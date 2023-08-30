@@ -1,5 +1,5 @@
-import 'package:e_commerce_store/model/functions/auth.dart';
-import 'package:e_commerce_store/widgets/login_or_home/login_or_home.dart';
+import 'package:e_commerce_store/infrastructure/authentication/auth.dart';
+import 'package:e_commerce_store/presentation/widgets/login_or_home/login_or_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

@@ -9,14 +9,9 @@ import 'package:provider/provider.dart';
 import 'widget/cart_listview.dart';
 import 'widget/checkout_widget.dart';
 
-class ScreenCart extends StatefulWidget {
+class ScreenCart extends StatelessWidget {
   const ScreenCart({super.key});
 
-  @override
-  State<ScreenCart> createState() => _ScreenCartState();
-}
-
-class _ScreenCartState extends State<ScreenCart> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -38,11 +33,16 @@ class _ScreenCartState extends State<ScreenCart> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20).r,
-                child: value.ids.isNotEmpty
+                child: Provider.of<CartProvider>(context, listen: false)
+                        .ids
+                        .isNotEmpty
                     ? StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                         stream: FirebaseFirestore.instance
                             .collection('products')
-                            .where('id', whereIn: value.ids)
+                            .where('id',
+                                whereIn: Provider.of<CartProvider>(context,
+                                        listen: false)
+                                    .ids)
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==

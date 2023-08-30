@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../model/wishlist_model.dart';
+import '../../domain/wishlist/model/wishlist_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class WishListProvider extends ChangeNotifier {

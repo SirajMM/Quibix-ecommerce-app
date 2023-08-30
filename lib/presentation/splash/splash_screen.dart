@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../widgets/login_or_home/login_or_home.dart';
+import '../widgets/login_or_home/login_or_home.dart';
 
 class ScreenSplash extends StatelessWidget {
   const ScreenSplash({super.key});

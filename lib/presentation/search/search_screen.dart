@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce_store/widgets/item_card.dart';
+import 'package:e_commerce_store/presentation/widgets/item_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
